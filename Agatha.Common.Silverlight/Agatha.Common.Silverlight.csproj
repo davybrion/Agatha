@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CD6FA3BD-DA5E-4E65-89B4-DDA81F50729F}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Agatha.Common.Silverlight</RootNamespace>
+    <AssemblyName>Agatha.Common.Silverlight</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>agatha.snk</AssemblyOriginatorKeyFile>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="mscorlib" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Agatha.Common\AsyncRequestDispatcher.cs">
+      <Link>AsyncRequestDispatcher.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\AsyncRequestDispatcherFactory.cs">
+      <Link>AsyncRequestDispatcherFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\AsyncRequestDispatcherFactoryStub.cs">
+      <Link>AsyncRequestDispatcherFactoryStub.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\AsyncRequestDispatcherStub.cs">
+      <Link>AsyncRequestDispatcherStub.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\Caching\CacheConfiguration.cs">
+      <Link>Caching\CacheConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\Caching\CacheManager.cs">
+      <Link>Caching\CacheManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\Caching\ICache.cs">
+      <Link>Caching\ICache.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\Caching\ICacheProvider.cs">
+      <Link>Caching\ICacheProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\Caching\InMemoryCache.cs">
+      <Link>Caching\InMemoryCache.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\Caching\InMemoryCacheProvider.cs">
+      <Link>Caching\InMemoryCacheProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\Caching\RequestCacheConfiguration.cs">
+      <Link>Caching\RequestCacheConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\Caching\Timers\ITimer.cs">
+      <Link>Caching\Timers\ITimer.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\Caching\Timers\ITimerProvider.cs">
+      <Link>Caching\Timers\ITimerProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\Caching\Timers\TimerProvider.cs">
+      <Link>Caching\Timers\TimerProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\Disposable.cs">
+      <Link>Disposable.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\EnableClientResponseCachingAttribute.cs">
+      <Link>EnableClientResponseCachingAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\EnableServiceResponseCachingAttribute.cs">
+      <Link>EnableServiceResponseCachingAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\ExceptionInfo.cs">
+      <Link>ExceptionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\ExceptionType.cs">
+      <Link>ExceptionType.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\IAsyncRequestProcessor.cs">
+      <Link>IAsyncRequestProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\IEnableResponseCachingAttribute.cs">
+      <Link>IEnableResponseCachingAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\InversionOfControl\IContainer.cs">
+      <Link>InversionOfControl\IContainer.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\InversionOfControl\IoC.cs">
+      <Link>InversionOfControl\IoC.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\InversionOfControl\Lifestyle.cs">
+      <Link>InversionOfControl\Lifestyle.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\IRequestProcessor.cs">
+      <Link>IRequestProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\OneWayRequest.cs">
+      <Link>OneWayRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\ProcessRequestsAsyncCompletedArgs.cs">
+      <Link>ProcessRequestsAsyncCompletedArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\ReceivedResponses.cs">
+      <Link>ReceivedResponses.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\Request.cs">
+      <Link>Request.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\Response.cs">
+      <Link>Response.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\ResponseReceiver.cs">
+      <Link>ResponseReceiver.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\WCF\IAsyncWcfRequestProcessor.cs">
+      <Link>WCF\IAsyncWcfRequestProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\WCF\KnownTypeProvider.cs">
+      <Link>WCF\KnownTypeProvider.cs</Link>
+    </Compile>
+    <Compile Include="Caching\Timers\TimerWrapper.cs" />
+    <Compile Include="ClientConfiguration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WCF\AsyncRequestProcessorProxy.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="agatha.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

@@ -1,0 +1,11 @@
+Davy Brion
+Tom Ceulemans
+Mark Meyers
+Arjen Smits (OneWayRequest support)
+Ian Davis (Agatha.Ninject project)
+Jason Diamond (support for request/response types and requesthandlers in multiple assemblies)
+Emil Ingerslev (AsyncRequestProcessor in Agatha.ServiceLayer.Silverlight)
+Andrew Rea (Agatha.StructureMap, REST (JSON + XML) support)
+Bart Deleye (Agatha.Ninject.Silverlight project, some fixes and cleanup)
+Jernej Logar (Agatha.Spring)
+Huseyin Tufekcilerli (gemspec file, FaultCode on ExceptionInfo patch)

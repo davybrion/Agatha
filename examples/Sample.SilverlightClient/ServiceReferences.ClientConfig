@@ -1,0 +1,18 @@
+﻿<configuration>
+  <system.serviceModel>
+    <bindings>
+      <basicHttpBinding>
+        <binding name="RequestProcessorBinding" maxBufferSize="2147483647" maxReceivedMessageSize="2147483647"
+                 receiveTimeout="00:30:00" sendTimeout="00:30:00">
+          <security mode="None" />
+        </binding>
+      </basicHttpBinding>
+    </bindings>
+    <client>
+      <endpoint binding="basicHttpBinding" bindingConfiguration="RequestProcessorBinding"
+					  contract="Agatha.Common.WCF.IWcfRequestProcessor"
+					  name="Agatha_IWcfRequestProcessor" 
+            address="http://localhost/Sample.ServiceLayer.Host/Service.svc" />
+    </client>
+  </system.serviceModel>
+</configuration>

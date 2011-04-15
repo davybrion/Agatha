@@ -1,0 +1,12 @@
+To install:
+
+For ReSharper 4.5:
+
+1. Copy the folder xunitcontrib.runner.resharper.4.5 to C:\Program Files\JetBrains\ReSharper\v4.5\Bin\plugins
+2. Copy the file resharper.external.annotations\xunit.xml to C:\Program Files\JetBrains\ReSharper\v4.5\Bin\External Annotations
+3. Copy *one* of xunit-ae.xml or xunit-xe.xml to a place it can live and be updated (e.g. C:\Users\<username>\ReSharper, or C:\Documents and Settings\<username>\Documents\ReSharper)
+   Mount a live template in Visual Studio (ReSharper -> Live Templates -> Mount file storage) and point to the copied file
+
+For ReSharper 4.1:
+
+As above, but replace all occurrences of 4.5 with 4.1

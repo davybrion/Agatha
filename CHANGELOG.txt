@@ -1,0 +1,102 @@
+Trunk:
+	- RequestHandlers whose base type's first generic type parameter is not a Request-derived type can now be registered as well
+
+1.2:
+	- RequestProcessor now has an AfterHandle(request, response) virtual method which is called after the request has been handled by the handler
+
+	- ReceivedResponses now has a Responses property which returns all of the retrieved responses
+
+	- ExceptionInfo now has a FaultCode property (string) which will be automatically filled in as long as your BusinessException type contains
+		a FaultCode property (thanks to a patch from Huseyin Tufekcilerli)
+
+	- Client-side caching (BREAKING CHANGE: EnableResponseCachingAttribute no longer exists, use the EnableServiceResponseCachingAttribute instead)
+		-> this is not supported in the in-process model
+
+	- Agatha.Spring has been included (thanks to a patch from Jernej Logar)
+
+	- Agatha.StructureMap.Container has been fixed so that it instructs StructureMap to use the default constructors of RequestProcessorProxy and AsyncRequestProcessorProxy
+		(thanks to a patch by Bart Deleye)
+
+	- Added BeforeResolvingRequestHandler virtual method to the RequestProcessor which gets called right before a RequestHandler is resolved through the container
+
+	- Fixed logging of WCF messages where some requests were logged as "... stream ..." (thanks to patch by Bart Deleye)
+
+	- Added Agatha.Ninject.Silveright (thanks to patch by Bart Deleye)
+
+	- updated Agatha.Unity and Agatha.Unity.Silverlight to use the 2.0 version of Unity
+
+	- applied patch from Andrew Rea to improve REST support (xml and json)
+
+1.1:
+	- fixed NullReferenceException in MessageInspector when using one-way requests in combination with INFO logging
+
+	- applied patch from Emil Ingerslev to introduce a couple of virtual methods in the RequestProcessor which allows you to customize how exceptions are logged
+
+	- added BeforeReturningResponses template method which you can use to modify the responses before they are returned to the consumer of the RequestDispatcher
+
+	- Applied patch from Andrew Rea to include REST (JSON and XML) support for the service contract
+
+	- Applied patch from Andrew Rea to support StructureMap
+
+	- Added a check (and an InvalidOperationException is thrown) in case of trying to add a Request with the same key more than once to the RequestDispatcher.
+  
+	- Added a Agatha.ServiceLayer.Silverlight project which contains a lightweight-version of the Service Layer to use in-process in a Silverlight app
+		(it was asked by a user who uses this for an online/offline scenario)
+
+	- All *Configuration classes have been made a bit more fluently
+
+	- The Process method in the IWcfRequestProcessor service contract is now configured to allow transaction flowing ([TransactionFlow(TransactionFlowOption.Allowed)])
+
+	- Agatha.Castle.Silverlight is now included
+
+	- Agatha.Castle is now built against Castle Windsor 2.1
+
+	- Applied patch from Jason Diamond to support having request/response types and requesthandlers in multiple
+	  assemblies
+
+	- Added AfterSendingRequests virtual method to AsyncRequestDispatcher and RequestDispatcher
+
+	- bugfix: ServiceLayerAndClientConfiguration used to create the ServiceLayerConfiguration too early, which 
+	  prevented you from overriding some implementation types
+
+	- Caching layer is now available... it only has an InMemory provider at the moment, but more will be added later
+
+	- added Agatha.Ninject project (patch contributed by Ian Davis)
+
+1.0:
+
+	- RequestProcessor now inherits from Disposable so derived classes can easily clean up their resources
+
+	- Added Agatha.ServiceLayer.AsyncRequestProcessor which implements the IAsyncRequestProcessor interface and delegates
+	  to the real IRequestProcessor in an asynchronous manner. Only useful when running the service layer and the client
+	  in the same process.
+
+	- Added Agatha.Common.IAsyncRequestProcessor interface which has the same definition as the IAsyncWcfRequestProcessor
+	  interface, except for the WCF specific stuff... The AsyncRequestDispatcher now communicates through an 
+ 	  IAsyncRequestProcessor instance instead of the WCF specific one.  This way, this is completely the same as it is
+	  for synchronous communication, and both the serverside components as the clientside classes can now be used _without_
+	  WCF (eg: in-process or with some other communication transport layer)
+
+	- Removed Agatha.Common.Silverlight.WCF.IAsyncWcfRequestProcessor and linked Agatha.Common.WCF.IAsyncWcfRequestProcessor
+	  into the Silverlight project... both interfaces are identicial so we only need one of them.
+
+	- added support for OneWayRequests (OneWay WCF calls) thanks to Arjen Smits' patch.
+
+1.0 Beta 2:
+
+	- logging in the servicelayer now happens through the Common.Logging instead of using log4net directly... 
+	  which means you can use whatever logging library you prefer
+
+	- (Breaking Change): If you want to pass your container instance to an Agatha container wrapper, you have 
+	  to pass it to the constructor of the wrapper, and then pass that IContainer instance to your 
+	  ServiceLayerConfiguration or ClientConfiguration instance before initializing
+
+	- Added Agatha.Unity and Agatha.Unity.Silverlight 
+
+	- added simple example of Agatha in use, with a small service layer, an IIS host for the service layer, 
+	  a .NET client which performs a synchronous and an asynchronous client, and a Silverlight client which
+	  also performs an asynchronous call
+
+
+1.0 Beta 1:
+	- initial release
