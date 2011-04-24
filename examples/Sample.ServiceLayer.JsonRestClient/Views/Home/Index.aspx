@@ -4,123 +4,104 @@
     Home Page
 </asp:Content>
 <asp:Content ID="Scripts" ContentPlaceHolderID="Scripts" runat="server">
-    <script type="text/javascript">
-        window.addEvent("domready", function () {
-            $("execute").addEvent("click", function () {
-                var dateOfBirth = $("dateofbirth").get("value");
-                var jsonRequest =
-                    new Request.JSONP({
-                        callBackKey: 'callback',
-                        url: "http://localhost/Sample.ServiceLayer.Host/Service.svc/jsonp/",
-                        data: {
-                            "request": "GetAgeRequest",
-                            "DateOfBirth": dateOfBirth
-                        },
-                        onComplete: function (responses) {
-                            $("result").set("html", "You are " + responses.ProcessJsonRequestsResult[0].Age);
-                        }
-                    }).send();
-            });
-
-            $("executeMultiple").addEvent("click", function () {
-                var textToReverse = $("textToReverse").get("value");
-                var jsonRequest =
-                    new Request.JSONP({
-                        callBackKey: 'callback',
-                        url: "http://localhost/Sample.ServiceLayer.Host/Service.svc/jsonp/",
-                        data: {
-                            "request[0]": "HelloWorldRequest",
-                            "request[1]": "GetServerDateRequest",
-                            "request[2]": "ReverseStringRequest",
-                            "StringToReverse[2]": textToReverse
-                        },
-                        onComplete: function (responses) {
-                            $("MultiResponse1").set("html", responses.ProcessJsonRequestsResult[0].Message);
-                            $("MultiResponse2").set("html", responses.ProcessJsonRequestsResult[1].Date.toString());
-                            $("MultiResponse3").set("html", responses.ProcessJsonRequestsResult[2].ReversedString);
-                        }
-                    }).send();
-            });
-
-            $("executeOneWayCommand").addEvent("click", function () {
-                var cacheKey = $("cacheKey").get("value");
-                var cacheValue = $("cacheValue").get("value");
-
-                $("cacheKey").set("value", "");
-                $("cacheValue").set("value", "");
-
-                var jsonRequest =
-                    new Request.JSONP({
-                        callBackKey: 'callback',
-                        url: "http://localhost/Sample.ServiceLayer.Host/Service.svc/jsonp/oneway",
-                        data: {
-                            "request": "SetCacheCommand",
-                            "CacheKey": cacheKey,
-                            "CacheValue": cacheValue
-                        },
-                        onComplete: function (responses) {
-                            $("onewaysent").set("html", "One way request has been sent").fade(0);
-                        }
-                    }).send();
-            });
-
-            $("getCacheKeyExecute").addEvent("click", function () {
-                var cacheKey = $("getCacheKey").get("value");
-                var jsonRequest =
-                    new Request.JSONP({
-                        callBackKey: 'callback',
-                        url: "http://localhost/Sample.ServiceLayer.Host/Service.svc/jsonp/",
-                        data: {
-                            "request": "GetCacheRequest",
-                            "CacheKey": cacheKey
-                        },
-                        onComplete: function (responses) {
-                            $("retrievedCacheValue").set("html", responses.ProcessJsonRequestsResult[0].CacheValue);
-                        }
-                    }).send();
-            });
-        });
-    </script>
+    <script src="<%= ResolveUrl("~/Scripts/Examples.js")%>" type="text/javascript"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <h2>
-        <%: ViewData["Message"] %></h2>
+    <h2>Using HTTP GET AND POST with JSON/JSONP</h2>
     <p>
         The following demos show the use of the following urls</p>
     <p>
         <ul>
-            <li>http://localhost/Sample.ServiceLayer.Host/Service.svc/jsonp/</li>
-            <li>http://localhost/Sample.ServiceLayer.Host/Service.svc/jsonp/oneway</li>
+            <li>http://localhost/Sample.ServiceLayer.Host/Service.svc/json/post</li>
+            <li>http://localhost/Sample.ServiceLayer.Host/Service.svc/json/post/oneway</li>
+            <li>http://localhost/Sample.ServiceLayer.Host/Service.svc/jsonp</li>
         </ul>
     </p>
     <ul>
-    
     </ul>
     <fieldset>
         <legend>Single Request</legend>
-        <p>
-            Please enter your date of birth in the format yyyy/mm/dd.</p>
-        <p>
-            <input type="text" name="dateofbirth" id="dateofbirth" /></p>
-        <p>
-            <input type="button" value="Get Age" id="execute" /></p>
-        <p id="result">
-        </p>
+        <table width="100%">
+            <tr>
+                <td>
+                    POST
+                </td>
+                <td>
+                    GET (jsonp)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Please enter your date of birth in the format yyyy/mm/dd.</p>
+                    <p>
+                        <input type="text" name="dateofbirth" id="dateofbirth_POST" /></p>
+                    <p>
+                        <input type="button" value="Get Age" id="dateofbirth_execute_POST" /></p>
+                    <p id="dateofbirth_result_POST">
+                    </p>
+                </td>
+                <td>
+                    <p>
+                        Please enter your date of birth in the format yyyy/mm/dd.</p>
+                    <p>
+                        <input type="text" name="dateofbirth" id="dateofbirth_GET" /></p>
+                    <p>
+                        <input type="button" value="Get Age" id="dateofbirth_execute_GET" /></p>
+                    <p id="dateofbirth_result_GET">
+                    </p>
+                </td>
+            </tr>
+        </table>
     </fieldset>
     <fieldset>
         <legend>Multiple Requests</legend>
-        <p>
-            Execute Multiple Requests</p>
-        <p>
-            <input type="button" id="executeMultiple" value="Execute Multiple Requests" /></p>
-        <p>
-            <strong>String To Reverse</strong>
-            <input type="text" value="text to reverse" id="textToReverse" /></p>
-        <ul>
-            <li><strong>HelloWorldResponse : </strong><span id="MultiResponse1">No Response Yet</span></li>
-            <li><strong>GetServerDateResponse : </strong><span id="MultiResponse2">No Response Yet</span></li>
-            <li><strong>ReverseStringResponse : </strong><span id="MultiResponse3">No Response Yet</span></li>
-        </ul>
+        <table width="100%">
+            <tr>
+                <td>
+                    POST
+                </td>
+                <td>
+                    GET (jsonp)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>
+                        Execute Multiple Requests</p>
+                    <p>
+                        <input type="button" id="executeMultiple_POST" value="Execute Multiple Requests" /></p>
+                    <p>
+                        <strong>String To Reverse</strong>
+                        <input type="text" value="text to reverse" id="textToReverse_POST" /></p>
+                    <ul>
+                        <li><strong>HelloWorldResponse : </strong><span id="MultiResponse1_POST">No Response
+                            Yet</span></li>
+                        <li><strong>GetServerDateResponse : </strong><span id="MultiResponse2_POST">No Response
+                            Yet</span></li>
+                        <li><strong>ReverseStringResponse : </strong><span id="MultiResponse3_POST">No Response
+                            Yet</span></li>
+                    </ul>
+                </td>
+                <td>
+                    <p>
+                        Execute Multiple Requests</p>
+                    <p>
+                        <input type="button" id="executeMultiple_GET" value="Execute Multiple Requests" /></p>
+                    <p>
+                        <strong>String To Reverse</strong>
+                        <input type="text" value="text to reverse" id="textToReverse_GET" /></p>
+                    <ul>
+                        <li><strong>HelloWorldResponse : </strong><span id="MultiResponse1_GET">No Response
+                            Yet</span></li>
+                        <li><strong>GetServerDateResponse : </strong><span id="MultiResponse2_GET">No Response
+                            Yet</span></li>
+                        <li><strong>ReverseStringResponse : </strong><span id="MultiResponse3_GET">No Response
+                            Yet</span></li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
     </fieldset>
     <fieldset>
         <legend>One Way Request</legend>

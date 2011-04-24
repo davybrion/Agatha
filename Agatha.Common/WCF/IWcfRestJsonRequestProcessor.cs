@@ -6,15 +6,21 @@ namespace Agatha.Common.WCF
     [ServiceContract]
     public interface IWcfRestJsonRequestProcessor
     {
-        [OperationContract(Name = "ProcessJsonRequests")]
+        [OperationContract(Name = "ProcessJsonRequestsGet")]
         [ServiceKnownType("GetKnownTypes", typeof(KnownTypeProvider))]
         [TransactionFlow(TransactionFlowOption.Allowed)]
-        [WebGet(UriTemplate="/", BodyStyle=WebMessageBodyStyle.WrappedResponse,ResponseFormat = WebMessageFormat.Json)]
+        [WebGet(UriTemplate = "/", BodyStyle = WebMessageBodyStyle.WrappedResponse, ResponseFormat = WebMessageFormat.Json)]
         Response[] Process();
 
-        [OperationContract(Name = "ProcessOneWayJsonRequests", IsOneWay = true)]
+        [OperationContract(Name = "ProcessJsonRequestsPost")]
         [ServiceKnownType("GetKnownTypes", typeof(KnownTypeProvider))]
-        [WebGet(UriTemplate = "/oneway", BodyStyle = WebMessageBodyStyle.WrappedResponse, ResponseFormat = WebMessageFormat.Json)]
-        void ProcessOneWayRequests();
+        [TransactionFlow(TransactionFlowOption.Allowed)]
+        [WebInvoke(UriTemplate = "/post", BodyStyle = WebMessageBodyStyle.Wrapped, ResponseFormat = WebMessageFormat.Json)]
+        Response[] Process(Request[] requests);
+
+        [OperationContract(Name = "ProcessOneWayJsonRequestsPost", IsOneWay = true)]
+        [ServiceKnownType("GetKnownTypes", typeof(KnownTypeProvider))]
+        [WebInvoke(UriTemplate = "/post/oneway", BodyStyle = WebMessageBodyStyle.Wrapped, ResponseFormat = WebMessageFormat.Json)]
+        void ProcessOneWayRequests(OneWayRequest[] requests);
     }
 }
