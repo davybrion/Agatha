@@ -46,6 +46,11 @@ namespace Agatha.Unity
 			return unityContainer.Resolve<TComponent>();
 		}
 
+        public TComponent Resolve<TComponent>(string key)
+        {
+            return unityContainer.Resolve<TComponent>(key);
+        }
+
 		public object Resolve(Type componentType)
 		{
 			return unityContainer.Resolve(componentType);
