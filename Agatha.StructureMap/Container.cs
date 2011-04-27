@@ -62,6 +62,11 @@ namespace Agatha.StructureMap
             return structureMapContainer.GetInstance<TComponent>();
         }
 
+        public TComponent Resolve<TComponent>(string key)
+        {
+            return structureMapContainer.GetInstance<TComponent>(key);
+        }
+
         public object Resolve(Type componentType)
         {
             return structureMapContainer.GetInstance(componentType);

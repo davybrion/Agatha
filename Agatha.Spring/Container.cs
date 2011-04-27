@@ -45,6 +45,11 @@ namespace Agatha.Spring
             return (TComponent)Resolve(typeof(TComponent));
         }
 
+        public TComponent Resolve<TComponent>(string key)
+        {
+            return (TComponent)context.GetObject(key);
+        }
+
         public object Resolve(Type componentType)
         {
             var instance = context.GetObject(componentType.FullName);

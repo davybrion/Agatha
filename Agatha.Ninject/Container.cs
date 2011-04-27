@@ -42,6 +42,11 @@ namespace Agatha.Ninject
 			return kernel.Get<TComponent>();
 		}
 
+        public TComponent Resolve<TComponent>(string key)
+        {
+            return kernel.Get<TComponent>(key);
+        }
+
 		public object Resolve(Type componentType)
 		{
 			return kernel.Get(componentType);

@@ -10,6 +10,7 @@ namespace Agatha.Common.InversionOfControl
 		void RegisterInstance<TComponent>(TComponent instance);
 
 		TComponent Resolve<TComponent>();
+        TComponent Resolve<TComponent>(string key);
 		object Resolve(Type componentType);
 
 		void Release(object component);
