@@ -3,6 +3,7 @@ using Agatha.Common.InversionOfControl;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using Microsoft.Practices.Unity;
+using Ninject;
 using Spring.Context.Support;
 using Spring.Objects.Factory.Config;
 using Spring.Objects.Factory.Support;
@@ -55,6 +56,18 @@ namespace Tests.InversionOfControlTests
             container.RegisterType<RequestB>("KeyForRequestB");
 
             return new Agatha.Unity.Container(container);
+        }
+    }
+
+    public sealed class ComponentResolvingByKeyWithNinject : ComponentResolvingByKey<Agatha.Ninject.Container>
+    {
+        protected override IContainer InitializeContainer()
+        {
+            var kernel = new StandardKernel();
+            kernel.Bind<RequestA>().ToSelf().Named("KeyForRequestA");
+            kernel.Bind<RequestB>().ToSelf().Named("KeyForRequestB");
+
+            return new Agatha.Ninject.Container(kernel);
         }
     }
 
