@@ -110,6 +110,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Common\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="AsyncRequestProcessorSpecs.cs" />
     <Compile Include="CacheManagerSpy.cs" />
     <Compile Include="ConfigurationTests\ClientComponentResolving.cs" />
@@ -138,7 +141,6 @@
     <Compile Include="RequestDispatcherTests\RequestDispatcherTestsState.cs" />
     <Compile Include="RequestProcessorTests\CachingSpecs.cs" />
     <Compile Include="RequestProcessorTests\OneWayRequestExceptionHandlingSpecs.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestProcessorTests\RequestProcessorAcidTest.cs" />
     <Compile Include="RequestProcessorTests\Rest\RestRequestBuilderTests.cs" />
     <Compile Include="RequestProcessorTests\TestTypes.cs" />
@@ -197,6 +199,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

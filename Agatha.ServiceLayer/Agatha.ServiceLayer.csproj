@@ -74,11 +74,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Common\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="AsyncRequestProcessor.cs" />
     <Compile Include="ServiceLayerAndClientConfiguration.cs" />
     <Compile Include="ServiceLayerConfiguration.cs" />
     <Compile Include="PerformanceLoggingRequestProcessor.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestHandler.cs" />
     <Compile Include="RequestProcessor.cs" />
     <Compile Include="WCF\AddErrorLoggingBehaviorAttribute.cs" />
@@ -113,6 +115,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
