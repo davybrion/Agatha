@@ -173,9 +173,11 @@
     <Compile Include="..\Agatha.Common\WCF\KnownTypeProvider.cs">
       <Link>WCF\KnownTypeProvider.cs</Link>
     </Compile>
+    <Compile Include="..\Common\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Caching\Timers\TimerWrapper.cs" />
     <Compile Include="ClientConfiguration.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WCF\AsyncRequestProcessorProxy.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +199,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

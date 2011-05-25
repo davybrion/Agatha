@@ -37,6 +37,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agatha.Ninject.Silverlight"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agatha.Spring", "Agatha.Spring\Agatha.Spring.csproj", "{142F03BA-5E44-4EF1-936F-17C9557BBB17}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{4C178455-65B6-4F54-B147-97FA965BBD4B}"
+	ProjectSection(SolutionItems) = preProject
+		Common\CommonAssemblyInfo.cs = Common\CommonAssemblyInfo.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
