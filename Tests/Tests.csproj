@@ -104,10 +104,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libs\xunit.net\xunit.dll</HintPath>
     </Reference>
-    <Reference Include="xunit.extensions.quicknet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\libs\quicknet\xunit.extensions.quicknet.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Common\CommonAssemblyInfo.cs">

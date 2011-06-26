@@ -1,10 +1,10 @@
+using System;
 using System.Linq;
 using Agatha.Common;
 using Castle.Core;
 using QuickDotNetCheck;
 using Tests.RequestProcessorTests.RequestResponse.Act;
 using Xunit;
-using xunit.extensions.quicknet;
 
 namespace Tests.RequestProcessorTests.RequestResponse
 {
@@ -109,6 +109,15 @@ namespace Tests.RequestProcessorTests.RequestResponse
                           .Select(request => request.GetType())
                           .Distinct()
                           .ForEach(type => Ensure.Equal(0, ProcessRequestsState.GetHandler(type).DefaultResponseReturned)));
+        }
+    }
+
+    public static class TypeExt
+    {
+        public static bool HasAttribute<T>(this Type type)
+            where T : class
+        {
+            return type.GetCustomAttributes(true).Any(src => (src as T) != null);
         }
     }
 }
