@@ -87,8 +87,8 @@ namespace Agatha.Common
             if (keyToTypes.Keys.Contains(key))
                 throw new InvalidOperationException(
                     String.Format("A request has already been added using the key '{0}'.", key));
-			AddRequest(request, true);
-			keyToTypes[key] = request.GetType();
+            keyToTypes[key] = request.GetType(); 
+            AddRequest(request, true);
 			keyToResultPositions[key] = requests.Count - 1;
 		}
 

@@ -13,17 +13,8 @@ namespace Tests.RequestDispatcherTests
             Using(() => new RequestDispatcherTestsState());
             Register(() => new AddRequest(() => Get<RequestDispatcherTestsState>().RequestDispatcher));
             Register(() => new AddRequestArray(() => Get<RequestDispatcherTestsState>().RequestDispatcher));
-            //Register(() => new AddRequestWithKeys(Get<RequestDispatcherTestsState>));
-            Register(() => new Clear(Get<RequestDispatcherTestsState>));
-            Run();
-        }
-
-        [Fact(Skip="unskip to see")]
-        public void Bug()
-        {
-            Using(() => new RequestDispatcherTestsState());
-            Register(() => new AddRequest(() => Get<RequestDispatcherTestsState>().RequestDispatcher));
             Register(() => new AddRequestWithKeys(Get<RequestDispatcherTestsState>));
+            Register(() => new Clear(Get<RequestDispatcherTestsState>));
             Run();
         }
     }
