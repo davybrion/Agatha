@@ -70,12 +70,12 @@
     <Reference Include="Ninject, Version=2.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\libs\ninject\Ninject.dll</HintPath>
     </Reference>
-    <Reference Include="QuickGenerate">
-      <HintPath>..\libs\quicknet\QuickGenerate.dll</HintPath>
+    <Reference Include="QuickDotNetCheck">
+      <HintPath>..\libs\quickdotnetcheck\QuickDotNetCheck.dll</HintPath>
     </Reference>
-    <Reference Include="QuickNet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="QuickGenerate, Version=0.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\libs\quicknet\QuickNet.dll</HintPath>
+      <HintPath>..\libs\quickgenerate\QuickGenerate.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks, Version=3.6.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -104,44 +104,43 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libs\xunit.net\xunit.dll</HintPath>
     </Reference>
-    <Reference Include="xunit.extensions.quicknet, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\libs\quicknet\xunit.extensions.quicknet.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Common\CommonAssemblyInfo.cs">
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="AsyncRequestProcessorSpecs.cs" />
-    <Compile Include="CacheManagerSpy.cs" />
     <Compile Include="ConfigurationTests\ClientComponentResolving.cs" />
     <Compile Include="ConfigurationTests\ServiceLayerAndClientComponentResolving.cs" />
     <Compile Include="ConfigurationTests\ServiceLayerComponentResolving.cs" />
     <Compile Include="ConfigurationTests\TestTypes.cs" />
     <Compile Include="InversionOfControlTests\ComponentResolvingByKey.cs" />
-    <Compile Include="NewRequestProcessorTests\AbstractHandlerForTest.cs" />
-    <Compile Include="NewRequestProcessorTests\CachingSpecs.cs" />
-    <Compile Include="NewRequestProcessorTests\DescribedAction.cs" />
-    <Compile Include="NewRequestProcessorTests\ExceptionHandlingSpecsHelper.cs" />
-    <Compile Include="NewRequestProcessorTests\ExceptionInfoSpecs.cs" />
-    <Compile Include="NewRequestProcessorTests\GeneralSpecs.cs" />
-    <Compile Include="NewRequestProcessorTests\HandlerForTest.cs" />
-    <Compile Include="NewRequestProcessorTests\ProcessRequestsTransition.cs" />
-    <Compile Include="NewRequestProcessorTests\RequestHandlerCalledHowSpecs.cs" />
-    <Compile Include="NewRequestProcessorTests\RequestProcessorTestsState.cs" />
-    <Compile Include="RequestDispatcherTests\AddRequestArray\AddRequestArraySpecs.cs" />
-    <Compile Include="RequestDispatcherTests\AddRequestWithKey\AddRequestWithKeySpecs.cs" />
-    <Compile Include="RequestDispatcherTests\AddRequest\AddRequestSpecs.cs" />
-    <Compile Include="RequestDispatcherTests\AddRequestArray\AddRequestArrayTransition.cs" />
-    <Compile Include="RequestDispatcherTests\AddRequest\AddRequestTransition.cs" />
-    <Compile Include="RequestDispatcherTests\AddRequestWithKey\AddRequestWithKeyTransition.cs" />
-    <Compile Include="RequestDispatcherTests\Clear\ClearSpecs.cs" />
-    <Compile Include="RequestDispatcherTests\Clear\ClearTransition.cs" />
+    <Compile Include="RequestDispatcherTests\AddRequest.cs" />
+    <Compile Include="RequestDispatcherTests\AddRequestArray.cs" />
+    <Compile Include="RequestDispatcherTests\AddRequestWithKeys.cs" />
+    <Compile Include="RequestDispatcherTests\Clear.cs" />
+    <Compile Include="RequestDispatcherTests\RequestDispatcherFixture.cs" />
+    <Compile Include="RequestDispatcherTests\RequestDispatcherSuite.cs" />
     <Compile Include="RequestDispatcherTests\RequestDispatcherTestsState.cs" />
-    <Compile Include="RequestProcessorTests\CachingSpecs.cs" />
-    <Compile Include="RequestProcessorTests\OneWayRequestExceptionHandlingSpecs.cs" />
-    <Compile Include="RequestProcessorTests\RequestProcessorAcidTest.cs" />
+    <Compile Include="RequestDispatcherTests\RequestGenerator.cs" />
+    <Compile Include="RequestProcessorTests\Async\AsyncRequestProcessorSuite.cs" />
+    <Compile Include="RequestProcessorTests\Async\GetError.cs" />
+    <Compile Include="RequestProcessorTests\Async\GetResults.cs" />
+    <Compile Include="RequestProcessorTests\Async\ProcessRequestsAsynchronously.cs" />
+    <Compile Include="RequestProcessorTests\CacheManagerSpy.cs" />
+    <Compile Include="RequestProcessorTests\OneWay\OneWayRequestExceptionHandling.cs" />
+    <Compile Include="RequestProcessorTests\OneWay\OneWayRequestsAndHandlers.cs" />
+    <Compile Include="RequestProcessorTests\OneWay\OneWayRequestSuite.cs" />
+    <Compile Include="RequestProcessorTests\OneWay\ProcessOneWayRequestsInput.cs" />
+    <Compile Include="RequestProcessorTests\OneWay\ProcessOneWayRequestsInputElement.cs" />
+    <Compile Include="RequestProcessorTests\RequestResponse\Act\Helpers\AbstractHandlerForTest.cs" />
+    <Compile Include="RequestProcessorTests\RequestResponse\Act\Helpers\DescribedAction.cs" />
+    <Compile Include="RequestProcessorTests\RequestResponse\Act\Helpers\HandlerForTest.cs" />
+    <Compile Include="RequestProcessorTests\RequestResponse\Act\ProcessRequests.cs" />
+    <Compile Include="RequestProcessorTests\RequestResponse\Act\ProcessRequestsState.cs" />
+    <Compile Include="RequestProcessorTests\RequestResponse\CachingSpecs.cs" />
+    <Compile Include="RequestProcessorTests\RequestResponse\ExceptionInfoSpecs.cs" />
+    <Compile Include="RequestProcessorTests\RequestResponse\GeneralSpecs.cs" />
+    <Compile Include="RequestProcessorTests\RequestResponse\RequestHandlerCalledHowSpecs.cs" />
     <Compile Include="RequestProcessorTests\Rest\RestRequestBuilderTests.cs" />
     <Compile Include="RequestProcessorTests\TestTypes.cs" />
     <Compile Include="UncheckedConventions.cs" />
