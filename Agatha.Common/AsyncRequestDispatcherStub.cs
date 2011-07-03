@@ -64,7 +64,7 @@ namespace Agatha.Common
 
 		public TOneWayRequest GetOneWayRequest<TOneWayRequest>() where TOneWayRequest : OneWayRequest
 		{
-			if (oneWayRequests.Count(r => r.GetType() == typeof(TOneWayRequest)) > 0)
+			if (oneWayRequests.Any(r => r.GetType() == typeof(TOneWayRequest)))
 			{
 				throw new InvalidOperationException(string.Format("Multiple OneWayRequests of type {0} have been added, use the GetOneWayRequests method instead to perform your inspection", typeof(TOneWayRequest)));
 			}

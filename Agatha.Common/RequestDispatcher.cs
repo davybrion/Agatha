@@ -102,18 +102,45 @@ namespace Agatha.Common
 		public virtual bool HasResponse<TResponse>() where TResponse : Response
 		{
 			SendRequestsIfNecessary();
-			return responses.OfType<TResponse>().Count() > 0;
+			return responses.OfType<TResponse>().Any();
+		}
+
+		private bool HasResponse(string key)
+		{
+			SendRequestsIfNecessary();
+			return keyToResultPositions.ContainsKey(key);
+		}
+
+		private bool HasMoreThanOneResponse<TResponse>() where TResponse : Response
+		{
+			SendRequestsIfNecessary();
+			return responses.OfType<TResponse>().Count() > 1;
 		}
 
 		public virtual TResponse Get<TResponse>() where TResponse : Response
 		{
 			SendRequestsIfNecessary();
+			if (!HasResponse<TResponse>())
+			{
+				throw new InvalidOperationException(String.Format("There is no response with type {0}. Maybe you called Clear before or forgot to add appropriate request first.", typeof(TResponse).FullName));
+			}
+
+			if (HasMoreThanOneResponse<TResponse>())
+			{
+				throw new InvalidOperationException(String.Format("There is more than one response with type {0}. If two request handlers return responses with the same type, you need to add requests using Add(string key, Request request).", typeof(TResponse).FullName));
+			}
+
 			return responses.OfType<TResponse>().Single();
 		}
 
 		public virtual TResponse Get<TResponse>(string key) where TResponse : Response
 		{
 			SendRequestsIfNecessary();
+			if (!HasResponse(key))
+			{
+				throw new InvalidOperationException(String.Format("There is no response with key '{0}'. Maybe you called Clear before or forgot to add appropriate request first.", key));
+			}
+
 			return (TResponse)responses[keyToResultPositions[key]];
 		}
 
@@ -204,11 +231,16 @@ namespace Agatha.Common
 
 		private void SendRequestsIfNecessary()
 		{
-			if (responses == null)
+			if (!RequestsSent())
 			{
 				responses = GetResponses(requests.ToArray());
 				DealWithPossibleExceptions(responses);
 			}
+		}
+
+		private bool RequestsSent()
+		{
+			return responses != null;
 		}
 
 		private void DealWithPossibleExceptions(IEnumerable<Response> responsesToCheck)
@@ -233,6 +265,11 @@ namespace Agatha.Common
 
 		private void AddRequest(Request request, bool wasAddedWithKey)
 		{
+			if (RequestsSent())
+			{
+				throw new InvalidOperationException("Requests where already send. Either add request earlier or call Clear.");
+			}
+
 			Type requestType = request.GetType();
 
 			if (RequestTypeIsAlreadyPresent(requestType) &&
@@ -252,7 +289,7 @@ namespace Agatha.Common
 
 		private bool RequestTypeIsAlreadyPresent(Type requestType)
 		{
-			return requests.Count(r => r.GetType().Equals(requestType)) > 0;
+			return requests.Any(r => r.GetType().Equals(requestType));
 		}
 	}
 }
