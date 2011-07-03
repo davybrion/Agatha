@@ -102,7 +102,7 @@ namespace Agatha.Common
 		public virtual bool HasResponse<TResponse>() where TResponse : Response
 		{
 			SendRequestsIfNecessary();
-			return responses.OfType<TResponse>().Count() > 0;
+			return responses.OfType<TResponse>().Any();
 		}
 
 		public virtual TResponse Get<TResponse>() where TResponse : Response
@@ -252,7 +252,7 @@ namespace Agatha.Common
 
 		private bool RequestTypeIsAlreadyPresent(Type requestType)
 		{
-			return requests.Count(r => r.GetType().Equals(requestType)) > 0;
+			return requests.Any(r => r.GetType().Equals(requestType));
 		}
 	}
 }

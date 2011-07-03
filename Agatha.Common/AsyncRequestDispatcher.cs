@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using Agatha.Common.Caching;
 using Agatha.Common.InversionOfControl;
-using Agatha.Common.WCF;
 
 namespace Agatha.Common
 {
@@ -199,7 +198,7 @@ namespace Agatha.Common
 
 		private bool RequestTypeIsAlreadyPresent(Type requestType)
 		{
-			return QueuedRequests.Count(r => r.GetType().Equals(requestType)) > 0;
+			return QueuedRequests.Any(r => r.GetType().Equals(requestType));
 		}
 
 		private bool RequestTypeIsNotAssociatedWithKey(Type requestType)

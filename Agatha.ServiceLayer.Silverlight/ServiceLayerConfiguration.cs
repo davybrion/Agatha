@@ -139,7 +139,7 @@ namespace Agatha.ServiceLayer
 
 			var interfaceType = type.GetInterfaces().FirstOrDefault(i => i.Name.StartsWith("IRequestHandler`") || i.Name.StartsWith("IOneWayRequestHandler`"));
 
-			if (interfaceType == null || interfaceType.GetGenericArguments().Count() == 0)
+			if (interfaceType == null || interfaceType.GetGenericArguments().Length == 0)
 			{
 				return null;
 			}
