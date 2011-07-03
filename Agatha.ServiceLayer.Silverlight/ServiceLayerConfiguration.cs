@@ -96,6 +96,7 @@ namespace Agatha.ServiceLayer
 			var requestResponseHandlerType = typeof(RequestHandler);
 			var openRequestReponseHandlerType = typeof(IRequestHandler<>);
 
+			Dictionary<Type, Type> requestWithRequestHandlers = new Dictionary<Type, Type>();
 			foreach (var assembly in requestHandlerAssemblies)
 			{
 				foreach (var type in assembly.GetTypes())
@@ -122,7 +123,15 @@ namespace Agatha.ServiceLayer
 
 						if (handlerType != null)
 						{
+							if (requestWithRequestHandlers.ContainsKey(requestType))
+							{
+								throw new InvalidOperationException(String.Format("Found two request handlers that handle the same request: {0}. "
+																				+ " First request handler: {1}, second: {2}. "
+																				+ " For each request type there must by only one request handler.", requestType.FullName, type.FullName, requestWithRequestHandlers[requestType].FullName));
+							}
+
 							IoC.Container.Register(handlerType, type, Lifestyle.Transient);
+							requestWithRequestHandlers.Add(requestType, type);
 						}
 					}
 				}
