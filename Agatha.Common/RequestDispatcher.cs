@@ -220,11 +220,16 @@ namespace Agatha.Common
 
 		private void SendRequestsIfNecessary()
 		{
-			if (responses == null)
+			if (!RequestsSent())
 			{
 				responses = GetResponses(requests.ToArray());
 				DealWithPossibleExceptions(responses);
 			}
+		}
+
+		private bool RequestsSent()
+		{
+			return responses != null;
 		}
 
 		private void DealWithPossibleExceptions(IEnumerable<Response> responsesToCheck)
@@ -249,6 +254,11 @@ namespace Agatha.Common
 
 		private void AddRequest(Request request, bool wasAddedWithKey)
 		{
+			if (RequestsSent())
+			{
+				throw new InvalidOperationException("Requests where already send. Either add request earlier or call Clear.");
+			}
+
 			Type requestType = request.GetType();
 
 			if (RequestTypeIsAlreadyPresent(requestType) &&
