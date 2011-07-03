@@ -96,31 +96,32 @@ namespace Agatha.ServiceLayer
 			var requestResponseHandlerType = typeof(RequestHandler);
 			var openRequestReponseHandlerType = typeof(IRequestHandler<>);
 
-			foreach (var assembly in requestHandlerAssemblies) 
+			foreach (var assembly in requestHandlerAssemblies)
 			{
 				foreach (var type in assembly.GetTypes())
 				{
 					if (type.IsAbstract)
 						continue;
 
-					if (type.IsSubclassOf(oneWayHandlerType))
-					{
-						var requestType = GetRequestType(type);
-
-						if (requestType != null)
-						{
-							var handlerType = openOneWayHandlerType.MakeGenericType(requestType);
-							IoC.Container.Register(handlerType, type, Lifestyle.Transient);
-						}
+					if (!type.IsSubclassOf(oneWayHandlerType) && !type.IsSubclassOf(requestResponseHandlerType))
 						continue;
-					}
 
-					if (type.IsSubclassOf(requestResponseHandlerType))
+					var requestType = GetRequestType(type);
+
+					if (requestType != null)
 					{
-						var requestType = GetRequestType(type);
-						if (requestType != null)
+						Type handlerType = null;
+						if (type.IsSubclassOf(oneWayHandlerType))
 						{
-							var handlerType = openRequestReponseHandlerType.MakeGenericType(requestType);
+							handlerType = openOneWayHandlerType.MakeGenericType(requestType);
+						}
+						else if (type.IsSubclassOf(requestResponseHandlerType))
+						{
+							handlerType = openRequestReponseHandlerType.MakeGenericType(requestType);
+						}
+
+						if (handlerType != null)
+						{
 							IoC.Container.Register(handlerType, type, Lifestyle.Transient);
 						}
 					}
