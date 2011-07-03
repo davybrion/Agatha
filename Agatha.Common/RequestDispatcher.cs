@@ -111,12 +111,23 @@ namespace Agatha.Common
 			return keyToResultPositions.ContainsKey(key);
 		}
 
+		private bool HasMoreThanOneResponse<TResponse>() where TResponse : Response
+		{
+			SendRequestsIfNecessary();
+			return responses.OfType<TResponse>().Count() > 1;
+		}
+
 		public virtual TResponse Get<TResponse>() where TResponse : Response
 		{
 			SendRequestsIfNecessary();
 			if (!HasResponse<TResponse>())
 			{
 				throw new InvalidOperationException(String.Format("There is no response with type {0}. Maybe you called Clear before or forgot to add appropriate request first.", typeof(TResponse).FullName));
+			}
+
+			if (HasMoreThanOneResponse<TResponse>())
+			{
+				throw new InvalidOperationException(String.Format("There is more than one response with type {0}. If two request handlers return responses with the same type, you need to add requests using Add(string key, Request request).", typeof(TResponse).FullName));
 			}
 
 			return responses.OfType<TResponse>().Single();

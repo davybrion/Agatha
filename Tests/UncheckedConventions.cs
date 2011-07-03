@@ -55,33 +55,5 @@ namespace Tests
             public override Response Handle(FirstRequest request) { return CreateDefaultResponse(); }
         }
         //---------------------------------------------------------------------------
-
-
-        //---------------------------------------------------------------------------
-        [Fact]
-        public void ConflictTwo()
-        {
-            RequestDispatcher.Add("1", new SecondRequest());
-            RequestDispatcher.Add("2", new ThirdRequest());
-            Assert.NotNull(RequestDispatcher.Get<FirstResponse>("1"));
-            Assert.NotNull(RequestDispatcher.Get<FirstResponse>("2"));
-            RequestDispatcher.Clear();
-
-            // But :
-            RequestDispatcher.Add(new SecondRequest());
-            RequestDispatcher.Add(new ThirdRequest());
-            Assert.Throws<InvalidOperationException>(() => RequestDispatcher.Get<FirstResponse>());
-        }
-
-        public class ThirdHandler : RequestHandler<SecondRequest, FirstResponse>
-        {
-            public override Response Handle(SecondRequest request) { return CreateDefaultResponse(); }
-        }
-
-        public class FourthHandler : RequestHandler<ThirdRequest, FirstResponse>
-        {
-            public override Response Handle(ThirdRequest request) { return CreateDefaultResponse(); }
-        }
-        //---------------------------------------------------------------------------
     }
 }
