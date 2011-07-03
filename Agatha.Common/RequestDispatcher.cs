@@ -105,15 +105,31 @@ namespace Agatha.Common
 			return responses.OfType<TResponse>().Any();
 		}
 
+		private bool HasResponse(string key)
+		{
+			SendRequestsIfNecessary();
+			return keyToResultPositions.ContainsKey(key);
+		}
+
 		public virtual TResponse Get<TResponse>() where TResponse : Response
 		{
 			SendRequestsIfNecessary();
+			if (!HasResponse<TResponse>())
+			{
+				throw new InvalidOperationException(String.Format("There is no response with type {0}. Maybe you called Clear before or forgot to add appropriate request first.", typeof(TResponse).FullName));
+			}
+
 			return responses.OfType<TResponse>().Single();
 		}
 
 		public virtual TResponse Get<TResponse>(string key) where TResponse : Response
 		{
 			SendRequestsIfNecessary();
+			if (!HasResponse(key))
+			{
+				throw new InvalidOperationException(String.Format("There is no response with key '{0}'. Maybe you called Clear before or forgot to add appropriate request first.", key));
+			}
+
 			return (TResponse)responses[keyToResultPositions[key]];
 		}
 
