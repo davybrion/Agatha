@@ -96,32 +96,42 @@ namespace Agatha.ServiceLayer
 			var requestResponseHandlerType = typeof(RequestHandler);
 			var openRequestReponseHandlerType = typeof(IRequestHandler<>);
 
-			foreach (var assembly in requestHandlerAssemblies) 
+			Dictionary<Type, Type> requestWithRequestHandlers = new Dictionary<Type, Type>();
+			foreach (var assembly in requestHandlerAssemblies)
 			{
 				foreach (var type in assembly.GetTypes())
 				{
 					if (type.IsAbstract)
 						continue;
 
-					if (type.IsSubclassOf(oneWayHandlerType))
-					{
-						var requestType = GetRequestType(type);
-
-						if (requestType != null)
-						{
-							var handlerType = openOneWayHandlerType.MakeGenericType(requestType);
-							IoC.Container.Register(handlerType, type, Lifestyle.Transient);
-						}
+					if (!type.IsSubclassOf(oneWayHandlerType) && !type.IsSubclassOf(requestResponseHandlerType))
 						continue;
-					}
 
-					if (type.IsSubclassOf(requestResponseHandlerType))
+					var requestType = GetRequestType(type);
+
+					if (requestType != null)
 					{
-						var requestType = GetRequestType(type);
-						if (requestType != null)
+						Type handlerType = null;
+						if (type.IsSubclassOf(oneWayHandlerType))
 						{
-							var handlerType = openRequestReponseHandlerType.MakeGenericType(requestType);
+							handlerType = openOneWayHandlerType.MakeGenericType(requestType);
+						}
+						else if (type.IsSubclassOf(requestResponseHandlerType))
+						{
+							handlerType = openRequestReponseHandlerType.MakeGenericType(requestType);
+						}
+
+						if (handlerType != null)
+						{
+							if (requestWithRequestHandlers.ContainsKey(requestType))
+							{
+								throw new InvalidOperationException(String.Format("Found two request handlers that handle the same request: {0}. "
+																				+ " First request handler: {1}, second: {2}. "
+																				+ " For each request type there must by only one request handler.", requestType.FullName, type.FullName, requestWithRequestHandlers[requestType].FullName));
+							}
+
 							IoC.Container.Register(handlerType, type, Lifestyle.Transient);
+							requestWithRequestHandlers.Add(requestType, type);
 						}
 					}
 				}
@@ -139,7 +149,7 @@ namespace Agatha.ServiceLayer
 
 			var interfaceType = type.GetInterfaces().FirstOrDefault(i => i.Name.StartsWith("IRequestHandler`") || i.Name.StartsWith("IOneWayRequestHandler`"));
 
-			if (interfaceType == null || interfaceType.GetGenericArguments().Count() == 0)
+			if (interfaceType == null || interfaceType.GetGenericArguments().Length == 0)
 			{
 				return null;
 			}

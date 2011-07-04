@@ -123,34 +123,44 @@ namespace Agatha.ServiceLayer
             var requestResponseHandlerType = typeof(RequestHandler);
             var openRequestReponseHandlerType = typeof(IRequestHandler<>);
 
+            var requestWithRequestHandlers = new Dictionary<Type, Type>();
             foreach (var assembly in requestHandlerAssemblies)
             {
                 foreach (var type in assembly.GetTypes())
                 {
                     if (type.IsAbstract)
                         continue;
-                    
+
+                    if (!type.IsSubclassOf(oneWayHandlerType) && !type.IsSubclassOf(requestResponseHandlerType))
+                        continue;
+
                     RequestHandlerRegistry.Register(type);
 
-                    if (type.IsSubclassOf(oneWayHandlerType))
-                    {
-                        var requestType = GetRequestType(type);
+                    var requestType = GetRequestType(type);
 
-                        if (requestType != null)
+                    if (requestType != null)
+                    {
+                        Type handlerType = null;
+                        if (type.IsSubclassOf(oneWayHandlerType))
                         {
-                            var handlerType = openOneWayHandlerType.MakeGenericType(requestType);
-                            IoC.Container.Register(handlerType, type, Lifestyle.Transient);
+                            handlerType = openOneWayHandlerType.MakeGenericType(requestType);
                         }
-                        continue;
-                    }
-
-                    if (type.IsSubclassOf(requestResponseHandlerType))
-                    {
-                        var requestType = GetRequestType(type);
-                        if (requestType != null)
+                        else if (type.IsSubclassOf(requestResponseHandlerType))
                         {
-                            var handlerType = openRequestReponseHandlerType.MakeGenericType(requestType);
+                            handlerType = openRequestReponseHandlerType.MakeGenericType(requestType);
+                        }
+
+                        if (handlerType != null)
+                        {
+                            if (requestWithRequestHandlers.ContainsKey(requestType))
+                            {
+                                throw new InvalidOperationException(String.Format("Found two request handlers that handle the same request: {0}. "
+                                                                                + " First request handler: {1}, second: {2}. "
+                                                                                + " For each request type there must by only one request handler.", requestType.FullName, type.FullName, requestWithRequestHandlers[requestType].FullName));
+                            }
+
                             IoC.Container.Register(handlerType, type, Lifestyle.Transient);
+                            requestWithRequestHandlers.Add(requestType, type);
                         }
                     }
                 }

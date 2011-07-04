@@ -63,7 +63,7 @@ namespace Agatha.ServiceLayer
 
     public abstract class RequestHandler<TRequest, TResponse> : RequestHandler, IRequestHandler<TRequest>, ITypedRequestHandler
 		where TRequest : Request
-		where TResponse : Response
+		where TResponse : Response, new()
 	{
 		public override Response Handle(Request request)
 		{
@@ -86,7 +86,7 @@ namespace Agatha.ServiceLayer
 
 		public TResponse CreateTypedResponse()
 		{
-			return (TResponse)Activator.CreateInstance(typeof(TResponse));
+			return new TResponse();
 		}
 	}
 

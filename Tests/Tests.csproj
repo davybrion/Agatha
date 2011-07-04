@@ -149,7 +149,6 @@
     <Compile Include="RequestProcessorTests\RequestResponse\RequestHandlerCalledHowSpecs.cs" />
     <Compile Include="RequestProcessorTests\Rest\RestRequestBuilderTests.cs" />
     <Compile Include="RequestProcessorTests\TestTypes.cs" />
-    <Compile Include="UncheckedConventions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Agatha.Castle\Agatha.Castle.csproj">
