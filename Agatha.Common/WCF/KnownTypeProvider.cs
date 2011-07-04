@@ -43,7 +43,6 @@ namespace Agatha.Common.WCF
         {
             List<Type> derivedTypes = GetDerivedTypesOf(type, types);
             knownTypes = Union(knownTypes, derivedTypes);
-            knownTypes.Union(types);
         }
 
         public static IEnumerable<Type> GetKnownTypes(ICustomAttributeProvider provider)

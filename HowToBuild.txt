@@ -1,3 +1,4 @@
 -install ruby
+-run "gem install rubyzip"
 -run "gem install albacore"
 -run "rake" from project root

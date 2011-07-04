@@ -1,10 +1,14 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Agatha.Common;
 using Agatha.Common.Caching;
+using Agatha.Common.Configuration;
 using Agatha.Common.InversionOfControl;
 using Agatha.Common.WCF;
 using Agatha.ServiceLayer;
+using Agatha.ServiceLayer.Conventions;
 using TestTypes;
 using Xunit;
 
@@ -12,14 +16,20 @@ namespace Tests.ConfigurationTests
 {
 	public abstract class ServiceLayerAndClientComponentResolving<TContainer> where TContainer : IContainer
 	{
+        private static readonly List<Assembly> requestHandlerAssemblies;
+        private static readonly List<Assembly> requestResponseAssemblies;
+
 		static ServiceLayerAndClientComponentResolving()
 		{
 			IoC.Container = null;
 			KnownTypeProvider.ClearAllKnownTypes();
+            requestHandlerAssemblies = new List<Assembly> { Assembly.GetExecutingAssembly(), typeof(RequestHandlerB).Assembly };
+            requestResponseAssemblies = new List<Assembly> { Assembly.GetExecutingAssembly(), typeof(RequestB).Assembly };
 			var configuration = new ServiceLayerAndClientConfiguration(Assembly.GetExecutingAssembly(), Assembly.GetExecutingAssembly(), 
 																		Activator.CreateInstance<TContainer>());
 			configuration.AddRequestHandlerAssembly(typeof(RequestHandlerB).Assembly);
 			configuration.AddRequestAndResponseAssembly(typeof(RequestB).Assembly);
+		    configuration.Use<RequestHandlerBasedConventions>();
 			configuration.Initialize();
 		}
 
@@ -32,7 +42,7 @@ namespace Tests.ConfigurationTests
 		[Fact]
 		public void ServiceLayerConfigurationIsSingleton()
 		{
-			Assert.Same(IoC.Container.Resolve<ServiceLayerConfiguration>(), IoC.Container.Resolve<ServiceLayerConfiguration>());
+		    AssertIsSingleton<ServiceLayerConfiguration>();
 		}
 
 		[Fact]
@@ -44,7 +54,7 @@ namespace Tests.ConfigurationTests
 		[Fact]
 		public void RequestProcessorIsTransient()
 		{
-			Assert.NotSame(IoC.Container.Resolve<IRequestProcessor>(), IoC.Container.Resolve<IRequestProcessor>());
+		    AssertIsTransient<IRequestProcessor>();
 		}
 
 		[Fact]
@@ -56,7 +66,7 @@ namespace Tests.ConfigurationTests
 		[Fact]
 		public void AsyncRequestProcessorIsTransient()
 		{
-			Assert.NotSame(IoC.Container.Resolve<IAsyncRequestProcessor>(), IoC.Container.Resolve<IAsyncRequestProcessor>());
+		    AssertIsTransient<IAsyncRequestProcessor>();
 		}
 
 		[Fact]
@@ -74,7 +84,7 @@ namespace Tests.ConfigurationTests
 		[Fact]
 		public void RequestHandlerIsTransient()
 		{
-			Assert.NotSame(IoC.Container.Resolve<IRequestHandler<RequestA>>(), IoC.Container.Resolve<IRequestHandler<RequestA>>());
+		    AssertIsTransient<IRequestHandler<RequestA>>();
 		}
 
 		[Fact]
@@ -92,7 +102,7 @@ namespace Tests.ConfigurationTests
 		[Fact]
 		public void OneWayRequestHandlerIsTransient()
 		{
-			Assert.NotSame(IoC.Container.Resolve<IOneWayRequestHandler<OneWayRequestA>>(), IoC.Container.Resolve<IOneWayRequestHandler<OneWayRequestA>>());
+		    AssertIsTransient<IOneWayRequestHandler<OneWayRequestA>>();
 		}
 	
 		[Fact]
@@ -104,7 +114,7 @@ namespace Tests.ConfigurationTests
 		[Fact]
 		public void RequestDispatcherIsTransient()
 		{
-			Assert.NotSame(IoC.Container.Resolve<IRequestDispatcher>(), IoC.Container.Resolve<IRequestDispatcher>());
+		    AssertIsTransient<IRequestDispatcher>();
 		}
 
 		[Fact]
@@ -116,7 +126,7 @@ namespace Tests.ConfigurationTests
 		[Fact]
 		public void AsyncRequestDispatcherIsTransient()
 		{
-			Assert.NotSame(IoC.Container.Resolve<IAsyncRequestDispatcher>(), IoC.Container.Resolve<IAsyncRequestDispatcher>());
+		    AssertIsTransient<IAsyncRequestDispatcher>();
 		}
 
 		[Fact]
@@ -128,7 +138,7 @@ namespace Tests.ConfigurationTests
 		[Fact]
 		public void RequestDispatcherFactoryIsSingleton()
 		{
-			Assert.Same(IoC.Container.Resolve<IRequestDispatcherFactory>(), IoC.Container.Resolve<IRequestDispatcherFactory>());
+		    AssertIsSingleton<IRequestDispatcherFactory>();
 		}
 
 		[Fact]
@@ -140,7 +150,7 @@ namespace Tests.ConfigurationTests
 		[Fact]
 		public void AsyncRequestDispatcherIsSingleton()
 		{
-			Assert.Same(IoC.Container.Resolve<IAsyncRequestDispatcherFactory>(), IoC.Container.Resolve<IAsyncRequestDispatcherFactory>());
+		    AssertIsSingleton<IAsyncRequestDispatcherFactory>();
 		}
 
 		[Fact]
@@ -152,7 +162,7 @@ namespace Tests.ConfigurationTests
 		[Fact]
 		public void CacheProviderIsSingleton()
 		{
-			Assert.Same(IoC.Container.Resolve<ICacheProvider>(), IoC.Container.Resolve<ICacheProvider>());
+		    AssertIsSingleton<ICacheProvider>();
 		}
 
 		[Fact]
@@ -164,7 +174,7 @@ namespace Tests.ConfigurationTests
 		[Fact]
 		public void CacheManagerIsSingleton()
 		{
-			Assert.Same(IoC.Container.Resolve<ICacheManager>(), IoC.Container.Resolve<ICacheManager>());
+		    AssertIsSingleton<ICacheManager>();
 		}
 
 		[Fact]
@@ -176,7 +186,7 @@ namespace Tests.ConfigurationTests
 		[Fact]
 		public void CacheConfigurationIsSingleton()
 		{
-			Assert.Same(IoC.Container.Resolve<CacheConfiguration>(), IoC.Container.Resolve<CacheConfiguration>());
+		    AssertIsSingleton<CacheConfiguration>();
 		}
 
 		[Fact]
@@ -202,6 +212,66 @@ namespace Tests.ConfigurationTests
 		{
 			Assert.Contains(typeof(ResponseB), KnownTypeProvider.GetKnownTypes(null));
 		}
+
+        [Fact]
+        public void CanResolveConventions()
+        {
+            Assert.IsType(typeof(RequestHandlerBasedConventions), IoC.Container.Resolve<IConventions>());
+        }
+
+        [Fact]
+        public void ConventionsAreRegisteredAsSingleton()
+        {
+            AssertIsSingleton<IConventions>();
+        }
+
+        [Fact]
+        public void CanResolveResponseTypeByConvention()
+        {
+            var conventions = IoC.Container.Resolve<IConventions>();
+            var reponseType = conventions.GetResponseTypeFor(new RequestA());
+            Assert.Equal(typeof(ResponseA), reponseType);
+        }
+
+        [Fact]
+        public void RequestHandlerRegistryIsSingleton()
+        {
+            AssertIsSingleton<IRequestHandlerRegistry>();
+        }
+
+        [Fact]
+        public void RequestHandlerRegistryContainsTypedRequestHandlers()
+        {
+            var expectedRequestHandlers = requestHandlerAssemblies.SelectMany(assembly =>
+                    assembly.GetTypes().Where(t => typeof(ITypedRequestHandler).IsAssignableFrom(t) && !t.IsAbstract).Select(t => t.FullName));
+            var actualRequestHandlers = IoC.Container.Resolve<IRequestHandlerRegistry>().GetTypedRequestHandlers().Select(t => t.FullName);
+            Assert.Equal(expectedRequestHandlers.Count(), expectedRequestHandlers.Intersect(actualRequestHandlers).Count());
+        }
+
+        [Fact]
+        public void RequestTypeRegistryIsSingleton()
+        {
+            AssertIsSingleton<IRequestTypeRegistry>();
+        }
+
+        [Fact]
+        public void RequestTypeRegistryContainsAllRequestTypesFromRegisteredAssemblies()
+        {
+            var expectedRequestTypes = requestResponseAssemblies.SelectMany(assembly =>
+                    assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Request)) && !t.IsAbstract)).Select(t => t.FullName);
+            var actualRequestTypes = IoC.Container.Resolve<IRequestTypeRegistry>().GetRegisteredRequestTypes().Select(t => t.FullName);
+            Assert.Equal(expectedRequestTypes.Count(), expectedRequestTypes.Intersect(actualRequestTypes).Count());
+        }
+
+        private static void AssertIsSingleton<T>()
+        {
+            Assert.Same(IoC.Container.Resolve<T>(), IoC.Container.Resolve<T>());
+        }
+
+        private static void AssertIsTransient<T>()
+        {
+            Assert.NotSame(IoC.Container.Resolve<T>(), IoC.Container.Resolve<T>());
+        }
 	}
 
 	public class ServiceLayerAndClientComponentResolvingWithCastle : ServiceLayerAndClientComponentResolving<Agatha.Castle.Container> { }

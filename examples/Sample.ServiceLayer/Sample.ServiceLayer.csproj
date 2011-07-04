@@ -51,6 +51,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -66,6 +67,9 @@
     <Compile Include="Handlers\HelloWorldHandler.cs" />
     <Compile Include="Handlers\ReverseStringHandler.cs" />
     <Compile Include="Handlers\SetServerCacheCommandHandler.cs" />
+    <Compile Include="Interceptors\HelloWorldRequestValidator.cs" />
+    <Compile Include="Interceptors\Validate.cs" />
+    <Compile Include="Interceptors\ValidatingInterceptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

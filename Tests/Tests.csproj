@@ -113,6 +113,9 @@
     <Compile Include="ConfigurationTests\ServiceLayerAndClientComponentResolving.cs" />
     <Compile Include="ConfigurationTests\ServiceLayerComponentResolving.cs" />
     <Compile Include="ConfigurationTests\TestTypes.cs" />
+    <Compile Include="Conventions\BasicConventionsSpecs.cs" />
+    <Compile Include="Conventions\ConventionBasedInterceptorSpecs.cs" />
+    <Compile Include="Conventions\RequestHandlerBasedConventionsSpecs.cs" />
     <Compile Include="InversionOfControlTests\ComponentResolvingByKey.cs" />
     <Compile Include="RequestDispatcherTests\AddRequest.cs" />
     <Compile Include="RequestDispatcherTests\AddRequestArray.cs" />
@@ -126,7 +129,10 @@
     <Compile Include="RequestProcessorTests\Async\GetError.cs" />
     <Compile Include="RequestProcessorTests\Async\GetResults.cs" />
     <Compile Include="RequestProcessorTests\Async\ProcessRequestsAsynchronously.cs" />
+    <Compile Include="RequestProcessorTests\BddSpecs.cs" />
     <Compile Include="RequestProcessorTests\CacheManagerSpy.cs" />
+    <Compile Include="RequestProcessorTests\Interceptors\RequestHandlingInterceptorSpecs.cs" />
+    <Compile Include="RequestProcessorTests\Interceptors\TestObjects.cs" />
     <Compile Include="RequestProcessorTests\OneWay\OneWayRequestExceptionHandling.cs" />
     <Compile Include="RequestProcessorTests\OneWay\OneWayRequestsAndHandlers.cs" />
     <Compile Include="RequestProcessorTests\OneWay\OneWayRequestSuite.cs" />

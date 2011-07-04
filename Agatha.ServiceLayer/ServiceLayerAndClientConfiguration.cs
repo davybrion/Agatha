@@ -18,8 +18,7 @@ namespace Agatha.ServiceLayer
 		public Type AsyncRequestProcessorImplementation { get; set; }
 		public Type CacheManagerImplementation { get; set; }
 		public Type CacheProviderImplementation { get; set; }
-		public IContainer Container { get; private set; }
-		public Type ContainerImplementation { get; private set; }
+	    public Type ContainerImplementation { get; private set; }
 		public Type BusinessExceptionType { get; set; }
 		public Type SecurityExceptionType { get; set; }
 
@@ -78,19 +77,17 @@ namespace Agatha.ServiceLayer
 			CacheProviderImplementation = typeof(InMemoryCacheProvider);
 
 			IoC.Container = container ?? (IContainer)Activator.CreateInstance(ContainerImplementation);
+		    serviceLayerConfiguration = new ServiceLayerConfiguration(IoC.Container);
 		}
 
 		public void Initialize()
 		{
-			serviceLayerConfiguration = new ServiceLayerConfiguration(IoC.Container)
-			{
-				AsyncRequestProcessorImplementation = AsyncRequestProcessorImplementation,
-				BusinessExceptionType = BusinessExceptionType,
-				RequestProcessorImplementation = RequestProcessorImplementation,
-				SecurityExceptionType = SecurityExceptionType,
-				CacheManagerImplementation = CacheManagerImplementation,
-				CacheProviderImplementation = CacheProviderImplementation
-			};
+		    serviceLayerConfiguration.AsyncRequestProcessorImplementation = AsyncRequestProcessorImplementation;
+		    serviceLayerConfiguration.BusinessExceptionType = BusinessExceptionType;
+		    serviceLayerConfiguration.RequestProcessorImplementation = RequestProcessorImplementation;
+		    serviceLayerConfiguration.SecurityExceptionType = SecurityExceptionType;
+		    serviceLayerConfiguration.CacheManagerImplementation = CacheManagerImplementation;
+		    serviceLayerConfiguration.CacheProviderImplementation = CacheProviderImplementation;
 
 			foreach (var assembly in requestHandlerAssemblies)
 				serviceLayerConfiguration.AddRequestHandlerAssembly(assembly);
@@ -105,5 +102,17 @@ namespace Agatha.ServiceLayer
 			IoC.Container.Register(typeof(IAsyncRequestDispatcher), AsyncRequestDispatcherImplementation, Lifestyle.Transient);
 			IoC.Container.Register(typeof(IAsyncRequestDispatcherFactory), AsyncRequestDispatcherFactoryImplementation, Lifestyle.Singleton);
 		}
+
+         public ServiceLayerAndClientConfiguration RegisterRequestHandlerInterceptor<T>() where T : IRequestHandlerInterceptor
+         {
+             serviceLayerConfiguration.RegisterRequestHandlerInterceptor<T>();
+             return this;
+         }
+
+         public ServiceLayerAndClientConfiguration Use<TConventions>() where TConventions : IConventions
+         {
+             serviceLayerConfiguration.Use<TConventions>();
+             return this;
+         }
 	}
 }

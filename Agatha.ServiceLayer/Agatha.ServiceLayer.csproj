@@ -78,6 +78,7 @@
       <Link>CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AsyncRequestProcessor.cs" />
+    <Compile Include="Conventions\RequestHandlerBasedConventions.cs" />
     <Compile Include="ServiceLayerAndClientConfiguration.cs" />
     <Compile Include="ServiceLayerConfiguration.cs" />
     <Compile Include="PerformanceLoggingRequestProcessor.cs" />
