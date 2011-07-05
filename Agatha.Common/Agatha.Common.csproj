@@ -91,6 +91,11 @@
     <Compile Include="Caching\Timers\TimerProvider.cs" />
     <Compile Include="Caching\Timers\TimerWrapper.cs" />
     <Compile Include="ClientConfiguration.cs" />
+    <Compile Include="Configuration\IRequestHandlerRegistry.cs" />
+    <Compile Include="Configuration\IRequestTypeRegistry.cs" />
+    <Compile Include="Configuration\WcfKnownTypesBasedRequestTypeRegistry.cs" />
+    <Compile Include="Conventions\BasicConventions.cs" />
+    <Compile Include="Conventions\IConventions.cs" />
     <Compile Include="Disposable.cs" />
     <Compile Include="EnableClientResponseCachingAttribute.cs" />
     <Compile Include="EnableServiceResponseCachingAttribute.cs" />
@@ -98,6 +103,8 @@
     <Compile Include="ExceptionType.cs" />
     <Compile Include="IAsyncRequestProcessor.cs" />
     <Compile Include="IEnableResponseCachingAttribute.cs" />
+    <Compile Include="Interceptors\ConventionBasedInterceptor.cs" />
+    <Compile Include="Interceptors\IRequestHandlerInterceptor.cs" />
     <Compile Include="InversionOfControl\IContainer.cs" />
     <Compile Include="InversionOfControl\IoC.cs" />
     <Compile Include="InversionOfControl\Lifestyle.cs" />
@@ -108,6 +115,7 @@
     <Compile Include="RequestDispatcherFactory.cs" />
     <Compile Include="RequestDispatcherFactoryStub.cs" />
     <Compile Include="RequestDispatcherStub.cs" />
+    <Compile Include="RequestProcessingContext.cs" />
     <Compile Include="ResponseReceiver.cs" />
     <Compile Include="WCF\AsyncRequestProcessorProxy.cs" />
     <Compile Include="WCF\IAsyncWcfRequestProcessor.cs" />

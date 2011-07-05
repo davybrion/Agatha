@@ -61,7 +61,7 @@ namespace Agatha.ServiceLayer
         public abstract void Handle(TRequest request);
     }
 
-    public abstract class RequestHandler<TRequest, TResponse> : RequestHandler, IRequestHandler<TRequest>
+    public abstract class RequestHandler<TRequest, TResponse> : RequestHandler, IRequestHandler<TRequest>, ITypedRequestHandler
 		where TRequest : Request
 		where TResponse : Response, new()
 	{
@@ -89,4 +89,11 @@ namespace Agatha.ServiceLayer
 			return new TResponse();
 		}
 	}
+
+    /// <summary>
+    /// This is just a marker interface to indicate that the request handler specifies a response type
+    /// </summary>
+    public interface ITypedRequestHandler
+    {
+    }
 }

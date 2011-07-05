@@ -51,6 +51,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="StructureMap">
+      <HintPath>..\..\libs\structuremap\StructureMap.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -88,6 +91,10 @@
     <ProjectReference Include="..\..\Agatha.Spring\Agatha.Spring.csproj">
       <Project>{142F03BA-5E44-4EF1-936F-17C9557BBB17}</Project>
       <Name>Agatha.Spring</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Agatha.StructureMap\Agatha.StructureMap.csproj">
+      <Project>{4F975E3B-2BED-40D1-A8F5-D5FA7030CCAB}</Project>
+      <Name>Agatha.StructureMap</Name>
     </ProjectReference>
     <ProjectReference Include="..\Sample.Common\Sample.Common.csproj">
       <Project>{66643D59-7747-44F6-8AA5-C329331E518E}</Project>
