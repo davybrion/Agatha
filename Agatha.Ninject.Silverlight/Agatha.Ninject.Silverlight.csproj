@@ -53,8 +53,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
-    <Reference Include="Ninject">
-      <HintPath>..\libs\ninject.silverlight\Ninject.dll</HintPath>
+    <Reference Include="Ninject, Version=2.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\examples\packages\Ninject.2.2.1.4\lib\sl4\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />
@@ -75,6 +76,7 @@
     <None Include="..\Agatha.Ninject\agatha.snk">
       <Link>agatha.snk</Link>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Agatha.Common.Silverlight\Agatha.Common.Silverlight.csproj">
