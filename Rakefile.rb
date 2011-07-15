@@ -22,13 +22,13 @@ end
 
 xunit :test => :build do |xunit|
 	xunit.command = "libs/xunit.net/xunit.console.clr4.exe"
-	xunit.assembly = "Tests/bin/release/Tests.dll"
+	xunit.assembly = "build/#{build_configuration}/Tests.dll"
 end
 
 zip :package do |zip|
 	Dir.mkdir(release_dir) unless File.directory?(release_dir)
 	zip.directories_to_zip "Agatha.ServiceLayer/Bin/#{build_configuration}"
-	zip.additional_files = "changelog.txt","contributors.txt","license.txt"
+	zip.additional_files = "contributors.txt","license.txt"
 	zip.output_file = release_dir + "/Agatha_#{version}.zip"
 	zip.output_path = File.dirname(__FILE__)
 end
