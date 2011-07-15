@@ -65,8 +65,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\examples\packages\CommonServiceLocator.1.0\lib\SL30\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity.Silverlight">
-      <HintPath>..\libs\unity.silverlight\Microsoft.Practices.Unity.Silverlight.dll</HintPath>
+      <HintPath>..\examples\packages\Unity.2.1.505.0\lib\SL30\Microsoft.Practices.Unity.Silverlight.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel" />
     <Reference Include="mscorlib" />
@@ -90,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="agatha.snk" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
