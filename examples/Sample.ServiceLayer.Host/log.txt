@@ -1,0 +1,2 @@
+WARN 2011-07-16 12:23:20 - Performance warning: 2924ms for the following batch: HelloWorldRequest, ReverseStringRequest
+WARN 2011-07-16 12:23:23 - Performance warning: 2733ms for the following batch: HelloWorldCommand

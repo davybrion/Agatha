@@ -12,7 +12,7 @@ namespace Sample.DotNetClient
 		{
 			InitializeAgatha();
 			Console.WriteLine(@"Press a key to end this program (hopefully, you saw ""Hello World!"" twice)");
-			//CallTheServiceSynchronously();
+			CallTheServiceSynchronously();
 			CallTheServiceAsynchronously();
 			Console.ReadKey();
 		}
@@ -97,7 +97,8 @@ namespace Sample.DotNetClient
             //new ClientConfiguration(typeof(HelloWorldRequest).Assembly, typeof(Agatha.Castle.Container)).Initialize();
 			//new ClientConfiguration(typeof(HelloWorldRequest).Assembly, typeof(Agatha.Ninject.Container)).Initialize();
 			//new ClientConfiguration(typeof(HelloWorldRequest).Assembly, typeof(Agatha.Unity.Container)).Initialize();
-            new ClientConfiguration(typeof(HelloWorldRequest).Assembly, typeof(Agatha.Spring.Container)).Initialize();
-		}
+            //new ClientConfiguration(typeof(HelloWorldRequest).Assembly, typeof(Agatha.Spring.Container)).Initialize();
+            new ClientConfiguration(typeof(HelloWorldRequest).Assembly, typeof(Agatha.StructureMap.Container)).Initialize();
+        }
 	}
 }
