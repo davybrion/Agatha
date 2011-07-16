@@ -11,6 +11,7 @@
     <description>Agatha Request/Response Service Layer - Server-side bits, for Unity.</description>
     <dependencies>
       <dependency id="Agatha-Common-Unity" version="1.3" />
+	  <dependency id="Common.Logging" version="2.0.0" />
     </dependencies>
   </metadata>
 </package>
