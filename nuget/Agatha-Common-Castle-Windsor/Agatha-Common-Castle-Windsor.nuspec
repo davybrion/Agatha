@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Agatha-Common-Castle-Windsor</id>
+    <version>1.3</version>
+    <authors>Davy Brion</authors>
+    <owners>davybrion</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>http://github.com/davybrion/agatha</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Agatha Request/Response Service Layer - Common, for Castle Windsor. Don't forget to install Agatha-ServiceLayer-Castle-Windsor as well for the server-side bits</description>
+    <dependencies>
+      <dependency id="Castle.Windsor" version="2.5.3" />
+    </dependencies>
+  </metadata>
+</package>
