@@ -3,7 +3,7 @@
 <head>
   <meta charset='utf-8'>
 
-  <title>davybrion/Agatha @ GitHub</title>
+  <title>Agatha Request/Response Service Layer</title>
 
   <style type="text/css">
     body {
@@ -16,18 +16,31 @@
       margin: 0 auto;
       width: 700px;
     }
-    h1 { font-size: 3.8em; color: #96996c; margin-bottom: 3px; }
+    h1 { font-size: 2.8em; color: #96996c; margin-bottom: 3px; }
     h1 .small { font-size: 0.4em; }
     h1 a { text-decoration: none }
     h2 { font-size: 1.5em; color: #96996c; }
     h3 { text-align: center; color: #96996c; }
     a { color: #96996c; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
+    .description { font-size: 1.1em; margin-bottom: 30px; margin-top: 30px; }
     .download { float: right; }
     pre { background: #000; color: #fff; padding: 15px;}
     hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
     .footer { text-align:center; padding-top:30px; font-style: italic; }
   </style>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17061496-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
 </head>
 
 <body>
@@ -35,27 +48,55 @@
 
   <div id="container">
 
-    <div class="download">
-      <a href="http://github.com/davybrion/Agatha/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/davybrion/Agatha/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
-
-    <h1><a href="http://github.com/davybrion/Agatha">Agatha</a>
-      <span class="small">by <a href="http://github.com/davybrion">davybrion</a></span></h1>
+    <h1><a href="http://github.com/davybrion/Agatha">Agatha Request/Response Service Layer</a></h1>
 
     <div class="description">
-      Agatha Request-Response Service Layer for .NET
+		Agatha is a Request/Response Service Layer for .NET. Simply put: Agatha enables you to <strong>reduce server roundtrips</strong>,
+		has <strong>strong caching features</strong> (both server-side and client-side) and pushes you in the direction of <strong>cleanly separated
+		and focused code</strong>. You can find a detailed overview of what a 
+		Request/Response Service layer is on this <a href="http://davybrion.com/blog/2009/11/requestresponse-service-layer-series/">page</a>.
+		Note that that series of posts was written before this was turned into an open source project, but 
+		all of the information is still valid. If you're interested in the development and usage of Agatha, join
+		the <a href="http://groups.google.com/group/agatha-rrsl">discussion group</a>.
     </div>
 
-    <h2>Authors</h2>
-<p>Davy Brion (ralinx@davybrion.com)<br/>Bart Deleye (bart.deleye@gmail.com)<br/></p>
-
-
+	<h2>More information</h2>
+	<p>
+		<a href="https://github.com/davybrion/Agatha/wiki/_pages">Agatha's Wiki pages</a><br/>
+		<a href="http://davybrion.com/blog/2009/11/hello-world-with-agatha/">Hello World with Agatha</a><br/>
+		<a href="http://davybrion.com/blog/2010/01/securing-your-agatha-service-layer/">Securing your Agatha Service Layer</a><br/>
+		<a href="http://davybrion.com/blog/2009/11/integrating-your-ioc-container-with-agatha/">Integrating your IOC container with Agatha</a><br/>
+		<a href="http://davybrion.com/blog/2009/12/running-an-agatha-service-layer-in-process-without-wcf/">Running an Agatha Service Layer in process without WCF</a><br/>
+		<a href="http://davybrion.com/blog/2009/12/one-way-or-fire-and-forget-requests-with-agatha/">One-Way or Fire-And-Forget requests with Agatha</a><br/>
+		<a href="http://davybrion.com/blog/2009/12/enabling-logging-in-your-agatha-service-layer/">Enabling logging in your Agatha Service Layer</a><br/>
+		<a href="http://davybrion.com/blog/2010/05/consuming-multiple-agatha-services/">Consuming multiple Agatha services</a><br/>
+		<a href="http://davybrion.com/blog/2010/05/consuming-an-agatha-service-from-a-non-agatha-aware-client/">Consuming an Agatha service from a non-Agatha-aware client</a><br/>
+		<a href="http://davybrion.com/blog/2010/01/agatha-vs-nservicebus/">Agatha vs NServiceBus</a><br/>
+		<a href="http://davybrion.com/blog/2010/06/using-agathas-server-side-caching/">Using Agatha's server-side caching</a><br/>
+		<a href="http://davybrion.com/blog/2010/08/using-agathas-client-side-caching/">Using Agatha's client-side caching</a><br/>
+		<a href="http://davybrion.com/blog/2011/02/using-distributed-caching-with-agatha/">Using distributed caching with Agatha</a><br/>
+		<a href="http://claircoder.blogspot.com/2011/06/how-we-tricked-agatha-rrsl-into.html">Agatha with claims-based security through WIF</a><br/>
+	</p>
+	
     <h2>Download</h2>
     <p>
-      You can download this project in either
+		You can download the source code of the 1.3 version <a href="https://github.com/davybrion/Agatha/zipball/agatha-1.3">here</a>. Or you
+		can install it through the following nuget packages:
+		<ul>
+			<li><a href="http://nuget.org/List/Packages/Agatha-Common-Castle-Windsor" target="_blank">Agatha-Common-Castle-Windsor</a></li>
+			<li><a href="http://nuget.org/List/Packages/Agatha-ServiceLayer-Castle-Windsor" target="_blank">Agatha-ServiceLayer-Castle-Windsor</a></li>
+			<li><a href="http://nuget.org/List/Packages/Agatha-Common-Ninject" target="_blank">Agatha-Common-Ninject</a></li>
+			<li><a href="http://nuget.org/List/Packages/Agatha-ServiceLayer-Ninject" target="_blank">Agatha-ServiceLayer-Ninject</a></li>
+			<li><a href="http://nuget.org/List/Packages/Agatha-Common-StructureMap" target="_blank">Agatha-Common-StructureMap</a></li>
+			<li><a href="http://nuget.org/List/Packages/Agatha-ServiceLayer-StructureMap" target="_blank">Agatha-ServiceLayer-StructureMap</a></li>
+			<li><a href="http://nuget.org/List/Packages/Agatha-Common-Unity" target="_blank">Agatha-Common-Unity</a></li>
+			<li><a href="http://nuget.org/List/Packages/Agatha-ServiceLayer-Unity" target="_blank">Agatha-ServiceLayer-Unity</a></li>
+		</ul>
+		Be sure to install both a Agatha-Common-* and Agatha-ServiceLayer-* package where '*' is your IOC container of choice.
+		For more information on how to configure Agatha, be sure to check out the <a href="http://davybrion.com/blog/2009/11/hello-world-with-agatha/">Hello World example</a>.
+	</p>
+	<p>
+      Or you can always download the latest version of the code in either
       <a href="http://github.com/davybrion/Agatha/zipball/master">zip</a> or
       <a href="http://github.com/davybrion/Agatha/tarball/master">tar</a> formats.
     </p>
@@ -64,12 +105,29 @@
       <pre>$ git clone git://github.com/davybrion/Agatha</pre>
     </p>
 
+	<h2>Shameless plugs</h2>
+	<p>
+		"We are a dev team for a leading investment bank in England. We are using it for rrsl communication in Silverlight for a number of large scale enterprise systems. Agatha is one of the few frameworks that is an absolute joy to use. As lead dev and architect I introduced it for its simplicity and power. I like the way it guides you in the right direction and towards the right architecture without imposing any limitations. It is one of those frameworks once you implement you never need to worry about again." - Nabil Shuhaiber
+	</p>
+	<p>
+		"Prior to using Agatha we had a number of Services, each with multiple Operation Contracts.  It was clear at this point that the future expansion of our product would only result in an increased number of these services and operations which would result in a maintenance nightmare as:
+		<ul>
+		 <li>Our services struggled to have clear boundaries – our services already had too many operations and with each new operation introduced we would agonize over whether to add it to an existing service or to create another new service</li>
+		 <li>Our developers fought over who would have specific services checked out</li>
+		 <li>Each time we modified a parameter on a server request the service definition would have to change</li>
+		</ul>
+		We converted to Agatha over a period of 3 days.  Although we still have additional services for specific requirements (user authentication, public facing service, Silverlight binding, etc), we have found that the maintenance headaches previously mentioned have disappeared and we can now expand the capabilities of our product without fear of an explosion of services or operations.
+
+		Since converting we have not uncovered any side-effects or performance issues which has made the move to Agatha a no-brainer." - Matt Swanton, First Contact SAAS
+	</p>
+	<p>
+		"Thanks in no small part to the Agatha library, interactions between the client code and our new domain service were more streamlined than ever.  Requests and responses were standardized, concerns could be more easily separated (we especially liked when Agatha supported StructureMap, as that was our IoC container of choice), and after some simple configuration we didn't have to worry about wiring things up anymore.  No messing with the configs, no updating service references, none of that." - David P Donahue	
+	</p>
+
     <div class="footer">
       get the source code on GitHub : <a href="http://github.com/davybrion/Agatha">davybrion/Agatha</a>
     </div>
 
   </div>
-
-  
 </body>
 </html>
