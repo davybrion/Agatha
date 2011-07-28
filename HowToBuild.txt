@@ -1,3 +1,6 @@
+To only compile you can just open solution in Visual Studio.
+
+To perform full build with tests:
 -install ruby
 -run "gem install zip"
 -run "gem install rake"

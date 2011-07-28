@@ -6,6 +6,5 @@
 *.user
 */*.user
 */*/*.user
-Common
 release
 build
