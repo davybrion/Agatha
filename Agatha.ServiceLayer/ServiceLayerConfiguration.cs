@@ -77,6 +77,7 @@ namespace Agatha.ServiceLayer
             CacheProviderImplementation = typeof(InMemoryCacheProvider);
             RequestTypeRegistry = new WcfKnownTypesBasedRequestTypeRegistry();
             RequestHandlerRegistry = new RequestHandlerRegistry();
+            RegisterRequestHandlerInterceptor<CachingInterceptor>();
         }
 
         public void Initialize()

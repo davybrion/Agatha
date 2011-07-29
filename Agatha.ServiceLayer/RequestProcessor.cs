@@ -11,7 +11,6 @@ namespace Agatha.ServiceLayer
     public class RequestProcessor : Disposable, IRequestProcessor
     {
         private readonly ServiceLayerConfiguration serviceLayerConfiguration;
-        private readonly ICacheManager cacheManager;
         private readonly ILog logger = LogManager.GetLogger(typeof(RequestProcessor));
 
         protected override void DisposeManagedResources()
@@ -19,10 +18,9 @@ namespace Agatha.ServiceLayer
             // empty by default but you should override this in derived classes so you can clean up your resources
         }
 
-        public RequestProcessor(ServiceLayerConfiguration serviceLayerConfiguration, ICacheManager cacheManager)
+        public RequestProcessor(ServiceLayerConfiguration serviceLayerConfiguration)
         {
             this.serviceLayerConfiguration = serviceLayerConfiguration;
-            this.cacheManager = cacheManager;
         }
 
         protected virtual void BeforeProcessing(IEnumerable<Request> requests) { }
@@ -41,92 +39,54 @@ namespace Agatha.ServiceLayer
         {
             if (requests == null) return null;
 
-            var responses = new List<Response>(requests.Length);
-
-            bool exceptionsPreviouslyOccurred = false;
+            var exceptionsPreviouslyOccurred = false;
 
             BeforeProcessing(requests);
 
-            foreach (var request in requests)
+            var processingContexts = requests.Select(request => new RequestProcessingContext(request)).ToList();
+            foreach (var requestProcessingState in processingContexts)
             {
-                var requestProcessingState = new RequestProcessingContext(request);
+                requestProcessingState.ExceptionsPreviouslyOccured = exceptionsPreviouslyOccurred;
                 IList<IRequestHandlerInterceptor> interceptors = new List<IRequestHandlerInterceptor>();
                 try
                 {
                     IList<IRequestHandlerInterceptor> invokedInterceptors = new List<IRequestHandlerInterceptor>();
-                    if (!exceptionsPreviouslyOccurred)
+                    interceptors = ResolveInterceptors();
+                    for (var i = 0; i < interceptors.Count; i++)
                     {
-                        interceptors = ResolveInterceptors();
-                        
-                        foreach (var interceptor in interceptors)
-                        {
-                            interceptor.BeforeHandlingRequest(requestProcessingState);
-                            invokedInterceptors.Add(interceptor);
-                            if (requestProcessingState.IsProcessed)
-                            {
-                                responses.Add(requestProcessingState.Response);
-                                break;
-                            }
-                        } 
+                        if (i > 0 && exceptionsPreviouslyOccurred) break;
+
+                        var interceptor = interceptors[i];
+                        interceptor.BeforeHandlingRequest(requestProcessingState);
+                        invokedInterceptors.Add(interceptor);
+                        if (requestProcessingState.IsProcessed) break;
                     }
 
                     if (!requestProcessingState.IsProcessed)
                     {
-                        var skipHandler = false;
-                        var cachingIsEnabledForThisRequest = cacheManager.IsCachingEnabledFor(request.GetType());
+                        var request = requestProcessingState.Request;
+                        BeforeResolvingRequestHandler(request);
 
-                        if (cachingIsEnabledForThisRequest)
+                        using (var handler = (IRequestHandler)IoC.Container.Resolve(GetRequestHandlerTypeFor(request)))
                         {
-                            var cachedResponse = cacheManager.GetCachedResponseFor(request);
-
-                            if (cachedResponse != null)
+                            try
                             {
-                                if (exceptionsPreviouslyOccurred)
+                                if (!exceptionsPreviouslyOccurred)
                                 {
-                                    var dummyResponse = Activator.CreateInstance(cachedResponse.GetType()) as Response;
-                                    responses.Add(SetStandardExceptionInfoWhenEarlierRequestsFailed(dummyResponse));
-                                    requestProcessingState.MarkAsProcessed(dummyResponse);
+                                    var response = GetResponseFromHandler(request, handler);
+                                    exceptionsPreviouslyOccurred = response.ExceptionType != ExceptionType.None;
+                                    requestProcessingState.MarkAsProcessed(response);
                                 }
                                 else
                                 {
-                                    responses.Add(cachedResponse);
-                                    requestProcessingState.MarkAsProcessed(cachedResponse);
+                                    var response = handler.CreateDefaultResponse();
+                                    SetStandardExceptionInfoWhenEarlierRequestsFailed(response);
+                                    requestProcessingState.MarkAsProcessed(response);
                                 }
-
-                                skipHandler = true;
                             }
-                        }
-                        if (!skipHandler)
-                        {
-                            BeforeResolvingRequestHandler(request);
-
-                            using (var handler = (IRequestHandler) IoC.Container.Resolve(GetRequestHandlerTypeFor(request)))
+                            finally
                             {
-                                try
-                                {
-                                    if (!exceptionsPreviouslyOccurred)
-                                    {
-                                        var response = GetResponseFromHandler(request, handler);
-                                        exceptionsPreviouslyOccurred = response.ExceptionType != ExceptionType.None;
-                                        responses.Add(response);
-                                        requestProcessingState.MarkAsProcessed(response);
-
-                                        if (response.ExceptionType == ExceptionType.None && cachingIsEnabledForThisRequest)
-                                        {
-                                            cacheManager.StoreInCache(request, response);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        var response = handler.CreateDefaultResponse();
-                                        responses.Add(SetStandardExceptionInfoWhenEarlierRequestsFailed(response));
-                                        requestProcessingState.MarkAsProcessed(response);
-                                    }
-                                }
-                                finally
-                                {
-                                    IoC.Container.Release(handler);
-                                }
+                                IoC.Container.Release(handler);
                             }
                         }
                     }
@@ -144,16 +104,17 @@ namespace Agatha.ServiceLayer
                 }
                 finally
                 {
-                    SaveDisposeInterceptors(interceptors);
+                    DisposeInterceptorsSafely(interceptors);
                 }
             }
+            var responses = processingContexts.Select(c => c.Response).ToArray();
 
             AfterProcessing(requests, responses);
 
-            return responses.ToArray();
+            return responses;
         }
 
-        private void SaveDisposeInterceptors(IList<IRequestHandlerInterceptor> interceptors)
+        private void DisposeInterceptorsSafely(IList<IRequestHandlerInterceptor> interceptors)
         {
             foreach (var interceptor in interceptors.Reverse())
             {
@@ -175,11 +136,10 @@ namespace Agatha.ServiceLayer
                 .Select(t => (IRequestHandlerInterceptor)IoC.Container.Resolve(t)).ToList();
         }
 
-        private Response SetStandardExceptionInfoWhenEarlierRequestsFailed(Response response)
+        private void SetStandardExceptionInfoWhenEarlierRequestsFailed(Response response)
         {
             response.ExceptionType = ExceptionType.EarlierRequestAlreadyFailed;
             response.Exception = new ExceptionInfo(new Exception(ExceptionType.EarlierRequestAlreadyFailed.ToString()));
-            return response;
         }
 
         private static Type GetRequestHandlerTypeFor(Request request)

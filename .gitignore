@@ -6,5 +6,6 @@
 *.user
 */*.user
 */*/*.user
-release
+*.xap
 build
+log.txt

@@ -20,5 +20,7 @@ namespace Agatha.Common
         }
 
         public bool IsProcessed { get; private set; }
+
+        public bool ExceptionsPreviouslyOccured { get; set; }
     }
 }

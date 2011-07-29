@@ -9,7 +9,7 @@ namespace Agatha.ServiceLayer
 {
 	public class PerformanceLoggingRequestProcessor : RequestProcessor
 	{
-		public PerformanceLoggingRequestProcessor(ServiceLayerConfiguration serviceLayerConfiguration, ICacheManager cacheManager) : base(serviceLayerConfiguration, cacheManager) {}
+		public PerformanceLoggingRequestProcessor(ServiceLayerConfiguration serviceLayerConfiguration) : base(serviceLayerConfiguration) {}
 
 		private readonly ILog performanceLogger = LogManager.GetLogger("AgathaPerformance");
 

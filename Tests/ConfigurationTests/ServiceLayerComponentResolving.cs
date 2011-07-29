@@ -5,6 +5,7 @@ using System.Reflection;
 using Agatha.Common;
 using Agatha.Common.Caching;
 using Agatha.Common.Configuration;
+using Agatha.Common.Interceptors;
 using Agatha.Common.InversionOfControl;
 using Agatha.Common.WCF;
 using Agatha.ServiceLayer;
@@ -18,6 +19,7 @@ namespace Tests.ConfigurationTests
     {
         private static readonly List<Assembly> requestHandlerAssemblies;
         private static readonly List<Assembly> requestResponseAssemblies;
+        private static ServiceLayerConfiguration configuration;
 
         static ServiceLayerComponentResolving()
         {
@@ -25,8 +27,8 @@ namespace Tests.ConfigurationTests
             KnownTypeProvider.ClearAllKnownTypes();
             requestHandlerAssemblies = new List<Assembly> { Assembly.GetExecutingAssembly(), typeof(RequestHandlerB).Assembly };
             requestResponseAssemblies = new List<Assembly> { Assembly.GetExecutingAssembly(), typeof(RequestB).Assembly };
-            var configuration = new ServiceLayerConfiguration(requestHandlerAssemblies[0], requestResponseAssemblies[0],
-                                                              Activator.CreateInstance<TContainer>());
+            configuration = new ServiceLayerConfiguration(requestHandlerAssemblies[0], requestResponseAssemblies[0],
+                                                          Activator.CreateInstance<TContainer>());
             configuration.AddRequestHandlerAssembly(requestHandlerAssemblies[1]);
             configuration.AddRequestAndResponseAssembly(requestResponseAssemblies[1]);
             configuration.Use<RequestHandlerBasedConventions>();
@@ -145,6 +147,12 @@ namespace Tests.ConfigurationTests
         public void CacheConfigurationIsSingleton()
         {
             AssertIsSingleton<CacheConfiguration>();
+        }
+
+        [Fact]
+        public void CachingInterceptorIsRegisteredAsFirstInterceptor()
+        {
+            Assert.Equal(typeof(CachingInterceptor), configuration.GetRegisteredInterceptorTypes().First());
         }
 
         [Fact]

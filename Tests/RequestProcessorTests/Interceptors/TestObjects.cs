@@ -3,7 +3,7 @@ using System.Threading;
 using Agatha.Common;
 using Agatha.ServiceLayer;
 
-namespace Tests.NewRequestProcessorTests
+namespace Tests.RequestProcessorTests.Interceptors
 {
     public class SpyRequest : Request
     {
