@@ -98,6 +98,15 @@ namespace Agatha.ServiceLayer
             RegisterRequestAndResponseTypes();
             RegisterRequestHandlers();
             ConfigureCachingLayer();
+            RegisterInterceptors();
+        }
+
+        private void RegisterInterceptors()
+        {
+            foreach (var interceptorType in registeredInterceptors)
+            {
+                IoC.Container.Register(interceptorType, interceptorType, Lifestyle.Transient);
+            }
         }
 
         private void ConfigureCachingLayer()
@@ -187,7 +196,6 @@ namespace Agatha.ServiceLayer
         public ServiceLayerConfiguration RegisterRequestHandlerInterceptor<T>() where T : IRequestHandlerInterceptor
         {
             registeredInterceptors.Add(typeof(T));
-            container.Register(typeof(T), typeof(T), Lifestyle.Transient);
             return this;
         }
 
