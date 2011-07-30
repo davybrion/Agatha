@@ -52,7 +52,13 @@ namespace Agatha.Castle
 			return windsorContainer.Resolve(componentType);
 		}
 
-		public void Release(object component)
+	    public TComponent TryResolve<TComponent>()
+	    {
+            if (windsorContainer.Kernel.HasComponent(typeof(TComponent))) return Resolve<TComponent>();
+	        return default(TComponent);
+	    }
+
+	    public void Release(object component)
 		{
 			windsorContainer.Release(component);
 		}

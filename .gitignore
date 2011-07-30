@@ -9,3 +9,4 @@
 *.xap
 build
 log.txt
+test_results.html

@@ -2,14 +2,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Agatha.Common;
-using Agatha.Common.Caching;
 using Common.Logging;
 
 namespace Agatha.ServiceLayer
 {
 	public class PerformanceLoggingRequestProcessor : RequestProcessor
 	{
-		public PerformanceLoggingRequestProcessor(ServiceLayerConfiguration serviceLayerConfiguration) : base(serviceLayerConfiguration) {}
+		public PerformanceLoggingRequestProcessor(ServiceLayerConfiguration serviceLayerConfiguration, IRequestProcessingErrorHandler errorHandler) : base(serviceLayerConfiguration, errorHandler) {}
 
 		private readonly ILog performanceLogger = LogManager.GetLogger("AgathaPerformance");
 

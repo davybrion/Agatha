@@ -5,7 +5,6 @@ using System.Reflection;
 using Agatha.Common;
 using Agatha.Common.Caching;
 using Agatha.Common.Configuration;
-using Agatha.Common.Interceptors;
 using Agatha.Common.InversionOfControl;
 using Agatha.Common.WCF;
 using Agatha.ServiceLayer;
@@ -156,6 +155,12 @@ namespace Tests.ConfigurationTests
         }
 
         [Fact]
+        public void InterceptorsAreTransient()
+        {
+            AssertIsTransient<CachingInterceptor>();
+        }
+
+        [Fact]
         public void RequestTypeIsRegistered()
         {
             Assert.Contains(typeof(RequestA), KnownTypeProvider.GetKnownTypes(null));
@@ -227,6 +232,12 @@ namespace Tests.ConfigurationTests
                     assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Request)) && !t.IsAbstract)).Select(t => t.FullName);
             var actualRequestTypes = IoC.Container.Resolve<IRequestTypeRegistry>().GetRegisteredRequestTypes().Select(t => t.FullName);
             Assert.Equal(expectedRequestTypes.Count(), expectedRequestTypes.Intersect(actualRequestTypes).Count());
+        }
+
+        [Fact]
+        public void CanResolveRequestProcessingErrorHandler()
+        {
+            Assert.NotNull(IoC.Container.Resolve<IRequestProcessingErrorHandler>());
         }
 
         private static void AssertIsSingleton<T>()

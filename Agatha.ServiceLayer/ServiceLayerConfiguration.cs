@@ -96,6 +96,7 @@ namespace Agatha.ServiceLayer
             IoC.Container.Register(typeof(ICacheManager), CacheManagerImplementation, Lifestyle.Singleton);
             IoC.Container.Register<ITimerProvider, TimerProvider>(Lifestyle.Singleton);
             if (Conventions != null) IoC.Container.Register(typeof(IConventions), Conventions, Lifestyle.Singleton);
+            IoC.Container.Register<IRequestProcessingErrorHandler, RequestProcessingErrorHandler>(Lifestyle.Transient);
             RegisterRequestAndResponseTypes();
             RegisterRequestHandlers();
             ConfigureCachingLayer();

@@ -12,15 +12,17 @@ namespace Agatha.ServiceLayer
     {
         private readonly ServiceLayerConfiguration serviceLayerConfiguration;
         private readonly ILog logger = LogManager.GetLogger(typeof(RequestProcessor));
+        private readonly IRequestProcessingErrorHandler errorHandler;
 
         protected override void DisposeManagedResources()
         {
             // empty by default but you should override this in derived classes so you can clean up your resources
         }
 
-        public RequestProcessor(ServiceLayerConfiguration serviceLayerConfiguration)
+        public RequestProcessor(ServiceLayerConfiguration serviceLayerConfiguration, IRequestProcessingErrorHandler errorHandler)
         {
             this.serviceLayerConfiguration = serviceLayerConfiguration;
+            this.errorHandler = errorHandler;
         }
 
         protected virtual void BeforeProcessing(IEnumerable<Request> requests) { }
@@ -46,17 +48,18 @@ namespace Agatha.ServiceLayer
             var processingContexts = requests.Select(request => new RequestProcessingContext(request)).ToList();
             foreach (var requestProcessingState in processingContexts)
             {
-                requestProcessingState.ExceptionsPreviouslyOccured = exceptionsPreviouslyOccurred;
+                if(exceptionsPreviouslyOccurred)
+                {
+                    errorHandler.DealWithPreviouslyOccurredExceptions(requestProcessingState);
+                    continue;
+                }
                 IList<IRequestHandlerInterceptor> interceptors = new List<IRequestHandlerInterceptor>();
                 try
                 {
                     IList<IRequestHandlerInterceptor> invokedInterceptors = new List<IRequestHandlerInterceptor>();
                     interceptors = ResolveInterceptors();
-                    for (var i = 0; i < interceptors.Count; i++)
+                    foreach (var interceptor in interceptors)
                     {
-                        if (i > 0 && exceptionsPreviouslyOccurred) break;
-
-                        var interceptor = interceptors[i];
                         interceptor.BeforeHandlingRequest(requestProcessingState);
                         invokedInterceptors.Add(interceptor);
                         if (requestProcessingState.IsProcessed) break;
@@ -64,31 +67,7 @@ namespace Agatha.ServiceLayer
 
                     if (!requestProcessingState.IsProcessed)
                     {
-                        var request = requestProcessingState.Request;
-                        BeforeResolvingRequestHandler(request);
-
-                        using (var handler = (IRequestHandler)IoC.Container.Resolve(GetRequestHandlerTypeFor(request)))
-                        {
-                            try
-                            {
-                                if (!exceptionsPreviouslyOccurred)
-                                {
-                                    var response = GetResponseFromHandler(request, handler);
-                                    exceptionsPreviouslyOccurred = response.ExceptionType != ExceptionType.None;
-                                    requestProcessingState.MarkAsProcessed(response);
-                                }
-                                else
-                                {
-                                    var response = handler.CreateDefaultResponse();
-                                    SetStandardExceptionInfoWhenEarlierRequestsFailed(response);
-                                    requestProcessingState.MarkAsProcessed(response);
-                                }
-                            }
-                            finally
-                            {
-                                IoC.Container.Release(handler);
-                            }
-                        }
+                        exceptionsPreviouslyOccurred = InvokeRequestHandler(requestProcessingState);
                     }
 
                     foreach (var interceptor in invokedInterceptors.Reverse())
@@ -114,6 +93,27 @@ namespace Agatha.ServiceLayer
             return responses;
         }
 
+        private bool InvokeRequestHandler(RequestProcessingContext requestProcessingState)
+        {
+            var request = requestProcessingState.Request;
+
+            BeforeResolvingRequestHandler(request);
+
+            using (var handler = (IRequestHandler) IoC.Container.Resolve(GetRequestHandlerTypeFor(request)))
+            {
+                try
+                {
+                    var response = GetResponseFromHandler(request, handler);
+                    requestProcessingState.MarkAsProcessed(response);
+                    return response.ExceptionType != ExceptionType.None;
+                }
+                finally
+                {
+                    IoC.Container.Release(handler);
+                }
+            }
+        }
+
         private void DisposeInterceptorsSafely(IList<IRequestHandlerInterceptor> interceptors)
         {
             foreach (var interceptor in interceptors.Reverse())
@@ -134,12 +134,6 @@ namespace Agatha.ServiceLayer
         {
             return serviceLayerConfiguration.GetRegisteredInterceptorTypes()
                 .Select(t => (IRequestHandlerInterceptor)IoC.Container.Resolve(t)).ToList();
-        }
-
-        private void SetStandardExceptionInfoWhenEarlierRequestsFailed(Response response)
-        {
-            response.ExceptionType = ExceptionType.EarlierRequestAlreadyFailed;
-            response.Exception = new ExceptionInfo(new Exception(ExceptionType.EarlierRequestAlreadyFailed.ToString()));
         }
 
         private static Type GetRequestHandlerTypeFor(Request request)
