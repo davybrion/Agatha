@@ -4,7 +4,7 @@ using Agatha.Common.InversionOfControl;
 using Agatha.ServiceLayer;
 using Xunit;
 
-namespace Tests.NewRequestProcessorTests
+namespace Tests.RequestProcessorTests.Interceptors
 {
     public class Given_a_RequestHandlerInterceptor_is_registered
         : BddSpecs

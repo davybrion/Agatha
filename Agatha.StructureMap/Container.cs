@@ -72,6 +72,11 @@ namespace Agatha.StructureMap
             return structureMapContainer.GetInstance(componentType);
         }
 
+        public TComponent TryResolve<TComponent>()
+        {
+            return structureMapContainer.TryGetInstance<TComponent>();
+        }
+
         public void Release(object component)
         {
             // NOTE: i think this needs to be a no-op in the case of structuremap... the code below was in the original patch but

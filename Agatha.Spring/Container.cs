@@ -57,6 +57,12 @@ namespace Agatha.Spring
             return instance;
         }
 
+        public TComponent TryResolve<TComponent>()
+        {
+            if (context.ContainsObjectDefinition(typeof(TComponent).FullName)) return Resolve<TComponent>();
+            return default(TComponent);
+        }
+
         public void Release(object component)
         {
             //not supported?

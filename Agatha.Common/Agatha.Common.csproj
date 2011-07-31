@@ -104,6 +104,7 @@
     <Compile Include="ExceptionType.cs" />
     <Compile Include="IAsyncRequestProcessor.cs" />
     <Compile Include="IEnableResponseCachingAttribute.cs" />
+    <Compile Include="Caching\CachingInterceptor.cs" />
     <Compile Include="Interceptors\ConventionBasedInterceptor.cs" />
     <Compile Include="Interceptors\IRequestHandlerInterceptor.cs" />
     <Compile Include="InversionOfControl\IContainer.cs" />

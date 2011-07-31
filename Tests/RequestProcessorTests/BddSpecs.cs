@@ -17,5 +17,10 @@ namespace Tests
         {
             return MockRepository.GenerateMock<TMock>();
         }
+
+        protected static TMock Stubbed<TMock>() where TMock : class
+        {
+            return MockRepository.GenerateStub<TMock>();
+        }
     }
 }

@@ -12,7 +12,9 @@ namespace Agatha.Common.InversionOfControl
 		TComponent Resolve<TComponent>();
         TComponent Resolve<TComponent>(string key);
 		object Resolve(Type componentType);
+        TComponent TryResolve<TComponent>();
 
 		void Release(object component);
+	    
 	}
 }

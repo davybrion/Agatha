@@ -56,7 +56,13 @@ namespace Agatha.Unity
 			return unityContainer.Resolve(componentType);
 		}
 
-		public void Release(object component)
+	    public TComponent TryResolve<TComponent>()
+	    {
+            if (unityContainer.IsRegistered<TComponent>()) return Resolve<TComponent>();
+	        return default(TComponent);
+	    }
+
+	    public void Release(object component)
 		{
 			unityContainer.Teardown(component);
 		}
