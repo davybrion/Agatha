@@ -240,6 +240,12 @@ namespace Tests.ConfigurationTests
             Assert.NotNull(IoC.Container.Resolve<IRequestProcessingErrorHandler>());
         }
 
+        [Fact]
+        public void TryResolveReturnsNullForNonRegisteredComponents()
+        {
+            Assert.Null(IoC.Container.TryResolve<IDummyInterface>());
+        }
+
         private static void AssertIsSingleton<T>()
         {
             Assert.Same(IoC.Container.Resolve<T>(), IoC.Container.Resolve<T>());
@@ -248,6 +254,10 @@ namespace Tests.ConfigurationTests
         private static void AssertIsTransient<T>()
         {
             Assert.NotSame(IoC.Container.Resolve<T>(), IoC.Container.Resolve<T>());
+        }
+
+        private interface IDummyInterface
+        {
         }
     }
 
