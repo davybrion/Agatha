@@ -126,6 +126,7 @@
     <Compile Include="RequestDispatcherTests\RequestDispatcherSuite.cs" />
     <Compile Include="RequestDispatcherTests\RequestDispatcherTestsState.cs" />
     <Compile Include="RequestDispatcherTests\RequestGenerator.cs" />
+    <Compile Include="RequestProcessingErrorHandlerSpecs.cs" />
     <Compile Include="RequestProcessorTests\Async\AsyncRequestProcessorSuite.cs" />
     <Compile Include="RequestProcessorTests\Async\GetError.cs" />
     <Compile Include="RequestProcessorTests\Async\GetResults.cs" />

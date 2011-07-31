@@ -18,6 +18,7 @@ namespace Tests.ConfigurationTests
     {
         private static readonly List<Assembly> requestHandlerAssemblies;
         private static readonly List<Assembly> requestResponseAssemblies;
+        private static ServiceLayerConfiguration configuration;
 
         static ServiceLayerComponentResolving()
         {
@@ -25,8 +26,8 @@ namespace Tests.ConfigurationTests
             KnownTypeProvider.ClearAllKnownTypes();
             requestHandlerAssemblies = new List<Assembly> { Assembly.GetExecutingAssembly(), typeof(RequestHandlerB).Assembly };
             requestResponseAssemblies = new List<Assembly> { Assembly.GetExecutingAssembly(), typeof(RequestB).Assembly };
-            var configuration = new ServiceLayerConfiguration(requestHandlerAssemblies[0], requestResponseAssemblies[0],
-                                                              Activator.CreateInstance<TContainer>());
+            configuration = new ServiceLayerConfiguration(requestHandlerAssemblies[0], requestResponseAssemblies[0],
+                                                          Activator.CreateInstance<TContainer>());
             configuration.AddRequestHandlerAssembly(requestHandlerAssemblies[1]);
             configuration.AddRequestAndResponseAssembly(requestResponseAssemblies[1]);
             configuration.Use<RequestHandlerBasedConventions>();
@@ -148,6 +149,18 @@ namespace Tests.ConfigurationTests
         }
 
         [Fact]
+        public void CachingInterceptorIsRegisteredAsFirstInterceptor()
+        {
+            Assert.Equal(typeof(CachingInterceptor), configuration.GetRegisteredInterceptorTypes().First());
+        }
+
+        [Fact]
+        public void InterceptorsAreTransient()
+        {
+            AssertIsTransient<CachingInterceptor>();
+        }
+
+        [Fact]
         public void RequestTypeIsRegistered()
         {
             Assert.Contains(typeof(RequestA), KnownTypeProvider.GetKnownTypes(null));
@@ -221,6 +234,18 @@ namespace Tests.ConfigurationTests
             Assert.Equal(expectedRequestTypes.Count(), expectedRequestTypes.Intersect(actualRequestTypes).Count());
         }
 
+        [Fact]
+        public void CanResolveRequestProcessingErrorHandler()
+        {
+            Assert.NotNull(IoC.Container.Resolve<IRequestProcessingErrorHandler>());
+        }
+
+        [Fact]
+        public void TryResolveReturnsNullForNonRegisteredComponents()
+        {
+            Assert.Null(IoC.Container.TryResolve<IDummyInterface>());
+        }
+
         private static void AssertIsSingleton<T>()
         {
             Assert.Same(IoC.Container.Resolve<T>(), IoC.Container.Resolve<T>());
@@ -229,6 +254,10 @@ namespace Tests.ConfigurationTests
         private static void AssertIsTransient<T>()
         {
             Assert.NotSame(IoC.Container.Resolve<T>(), IoC.Container.Resolve<T>());
+        }
+
+        private interface IDummyInterface
+        {
         }
     }
 

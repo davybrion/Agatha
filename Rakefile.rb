@@ -2,7 +2,6 @@ require 'albacore'
 
 version = "1.3.0"
 common_dir = "Common"
-release_dir = "release"
 build_configuration = "Release"
 
 assemblyinfo :assemblyinfo do |asm|
@@ -24,6 +23,8 @@ end
 xunit :test => :build do |xunit|
 	xunit.command = "libs/xunit.net/xunit.console.clr4.exe"
 	xunit.assembly = "build/#{build_configuration}/Tests.dll"
+	running_local = ENV['BUILD_NUMBER'].nil?
+	xunit.parameters "/html test_results.html" if running_local
 end
 
 task :default => [:test]

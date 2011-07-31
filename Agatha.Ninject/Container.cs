@@ -52,7 +52,12 @@ namespace Agatha.Ninject
 			return kernel.Get(componentType);
 		}
 
-		public void Release(object component)
+	    public TComponent TryResolve<TComponent>()
+	    {
+	        return kernel.TryGet<TComponent>();
+	    }
+
+	    public void Release(object component)
 		{
 			// not supported
 		}
