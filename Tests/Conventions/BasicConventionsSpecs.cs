@@ -32,6 +32,31 @@ namespace Tests.Conventions
         }
     }
 
+    public class When_resolving_the_RequestType_using_BasicConventions_given_one_exists
+        : BddSpecs
+    {
+        private IConventions conventions;
+        private Type requestType;
+
+        protected override void Given()
+        {
+            var requestTypeRegistry = MockRepository.GenerateStub<IRequestTypeRegistry>();
+            requestTypeRegistry.Stub(r => r.GetRegisteredRequestTypes()).Return(new[] { typeof(TestRequest) });
+            conventions = new BasicConventions(requestTypeRegistry);
+        }
+
+        protected override void When()
+        {
+            requestType = conventions.GetRequestTypeFor(new TestResponse());
+        }
+
+        [Fact]
+        public void The_Response_suffix_should_be_replaced_by_the_Request_suffix()
+        {
+            Assert.Equal(requestType.Name, "TestRequest");
+        }
+    }
+
     public class When_creating_BasicConventions_given_a_request_type_without_corresponding_response_type
          : BddSpecs
     {

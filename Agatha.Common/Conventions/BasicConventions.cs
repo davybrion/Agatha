@@ -8,6 +8,7 @@ namespace Agatha.Common.Conventions
     public class BasicConventions : IConventions
     {
         private readonly IDictionary<Type, Type> requestResponseMappings = new Dictionary<Type, Type>();
+        private readonly IDictionary<Type, Type> responseRequestMappings = new Dictionary<Type, Type>();
 
         public BasicConventions(IRequestTypeRegistry configuration)
         {
@@ -19,6 +20,7 @@ namespace Agatha.Common.Conventions
             foreach (var requestType in requestTypes.Where(t => t.Name.EndsWith("Request")))
             {
                 requestResponseMappings.Add(requestType, DetermineResponseType(requestType));
+                responseRequestMappings.Add(DetermineResponseType(requestType), requestType);
             }
         }
 
@@ -42,6 +44,13 @@ namespace Agatha.Common.Conventions
             if (request == null) throw new ArgumentNullException("request");
 
             return requestResponseMappings[request.GetType()];
+        }
+
+        public Type GetRequestTypeFor(Response response)
+        {
+            if (response == null) throw new ArgumentNullException("response");
+
+            return responseRequestMappings[response.GetType()];
         }
     }
 }
