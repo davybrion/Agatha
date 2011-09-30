@@ -10,6 +10,7 @@ namespace Agatha.Common
 		public string Message { get; set; }
 		public string StackTrace { get; set; }
 		public string Type { get; set; }
+        public ExceptionType ExceptionType { get; set; }
 		public string FaultCode { get; set; }
 
 		public ExceptionInfo() { }
