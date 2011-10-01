@@ -19,8 +19,9 @@ namespace Agatha.Common.Conventions
         {
             foreach (var requestType in requestTypes.Where(t => t.Name.EndsWith("Request")))
             {
-                requestResponseMappings.Add(requestType, DetermineResponseType(requestType));
-                responseRequestMappings.Add(DetermineResponseType(requestType), requestType);
+                var determineResponseType = DetermineResponseType(requestType);
+                requestResponseMappings.Add(requestType, determineResponseType);
+                responseRequestMappings.Add(determineResponseType, requestType);
             }
         }
 
