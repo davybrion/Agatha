@@ -140,6 +140,11 @@ namespace Agatha.ServiceLayer
 
         private void DisposeInterceptorsSafely(IList<IRequestHandlerInterceptor> interceptors)
         {
+            if (interceptors == null)
+            {
+                return;
+            }
+
             foreach (var interceptor in interceptors.Reverse())
             {
                 try
