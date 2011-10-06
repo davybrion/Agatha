@@ -79,17 +79,13 @@ namespace Agatha.ServiceLayer
                 {
                     try
                     {
-                        foreach (var interceptor in invokedInterceptors.Reverse())
+                        Exception lastExceptionFromInterceptor = RunInvokedInterceptorsSafely(requestProcessingState, invokedInterceptors);
+                        if (lastExceptionFromInterceptor != null)
                         {
-                            interceptor.AfterHandlingRequest(requestProcessingState);
+                            logger.Error(lastExceptionFromInterceptor);
+                            exceptionsPreviouslyOccurred = true;
+                            errorHandler.DealWithException(requestProcessingState, lastExceptionFromInterceptor);
                         }
-                        invokedInterceptors.Clear();
-                    }
-                    catch (Exception exc)
-                    {
-                        logger.Error(exc);
-                        exceptionsPreviouslyOccurred = true;
-                        errorHandler.DealWithException(requestProcessingState, exc);
                     }
                     finally
                     {
@@ -122,6 +118,24 @@ namespace Agatha.ServiceLayer
                     IoC.Container.Release(handler);
                 }
             }
+        }
+
+        private Exception RunInvokedInterceptorsSafely(RequestProcessingContext requestProcessingState, IList<IRequestHandlerInterceptor> invokedInterceptors)
+        {
+            Exception lastExceptionFromInteceptor = null;
+            foreach (var interceptor in invokedInterceptors.Reverse())
+            {
+                try
+                {
+                    interceptor.AfterHandlingRequest(requestProcessingState);
+                }
+                catch (Exception exc)
+                {
+                    lastExceptionFromInteceptor = exc;
+                }
+            }
+
+            return lastExceptionFromInteceptor;
         }
 
         private void DisposeInterceptorsSafely(IList<IRequestHandlerInterceptor> interceptors)
