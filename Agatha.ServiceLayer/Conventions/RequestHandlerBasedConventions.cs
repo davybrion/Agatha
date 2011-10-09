@@ -66,9 +66,9 @@ namespace Agatha.ServiceLayer.Conventions
 
         public Type GetRequestTypeFor(Response response)
         {
-            if (response == null) throw new ArgumentNullException("request");
+            if (response == null) throw new ArgumentNullException("response");
             var responseType = response.GetType();
-            if (!requestResponseMappings.ContainsKey(responseType))
+            if (!responseRequestMappings.ContainsKey(responseType))
                 throw new Exception("No request type found by convention for response type " + responseType);
 
             return responseRequestMappings[responseType];
