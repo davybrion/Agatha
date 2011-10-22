@@ -178,15 +178,14 @@ namespace Agatha.ServiceLayer
             if (exceptionType.Equals(serviceLayerConfiguration.BusinessExceptionType))
             {
                 response.ExceptionType = ExceptionType.Business;
-                response.Exception.ExceptionType = ExceptionType.Business;
                 SetExceptionFaultCode(exception, response.Exception);
+
                 return;
             }
 
             if (exceptionType.Equals(serviceLayerConfiguration.SecurityExceptionType))
             {
                 response.ExceptionType = ExceptionType.Security;
-                response.Exception.ExceptionType = ExceptionType.Security;
                 SetExceptionFaultCode(exception, response.Exception);
                 return;
             }
