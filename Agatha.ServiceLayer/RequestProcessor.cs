@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Agatha.Common;
-using Agatha.Common.Caching;
 using Agatha.Common.InversionOfControl;
 using Common.Logging;
 
@@ -179,7 +178,6 @@ namespace Agatha.ServiceLayer
             if (exceptionType.Equals(serviceLayerConfiguration.BusinessExceptionType))
             {
                 response.ExceptionType = ExceptionType.Business;
-
                 SetExceptionFaultCode(exception, response.Exception);
 
                 return;
@@ -188,6 +186,7 @@ namespace Agatha.ServiceLayer
             if (exceptionType.Equals(serviceLayerConfiguration.SecurityExceptionType))
             {
                 response.ExceptionType = ExceptionType.Security;
+                SetExceptionFaultCode(exception, response.Exception);
                 return;
             }
 
