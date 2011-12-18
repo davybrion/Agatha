@@ -101,7 +101,7 @@ namespace Agatha.ServiceLayer
 			{
 				foreach (var type in assembly.GetTypes())
 				{
-					if (type.IsAbstract)
+					if (type.IsAbstract || type.IsGenericType)
 						continue;
 
 					if (!oneWayHandlerType.IsAssignableFrom(type) && !requestResponseHandlerType.IsAssignableFrom(type))
