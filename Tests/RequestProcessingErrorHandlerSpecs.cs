@@ -102,7 +102,7 @@ namespace Tests
         {
             protected RequestProcessingContext Context;
             private Request request;
-            private IRequestProcessingErrorHandler errorHandler = new RequestProcessingErrorHandler();
+            private IRequestProcessingErrorHandler errorHandler;
             private ICacheManager cacheManager;
 
             protected IContainer Container
@@ -113,7 +113,7 @@ namespace Tests
             protected override void Given()
             {
                 IoC.Container = new Container();
-                errorHandler = new RequestProcessingErrorHandler();
+                errorHandler = new RequestProcessingErrorHandler(new ServiceLayerConfiguration(IoC.Container));
                 request = new RequestA();
                 Context = new RequestProcessingContext(request);
                 cacheManager = Stubbed<ICacheManager>();

@@ -205,4 +205,103 @@ namespace Tests.RequestProcessorTests.Interceptors
             Assert.NotNull(erroneousRequest.AfterProcessingTimeStamp);
         }
     }
+
+    public class Given_the_first_interceptor_fails_on_BeforeHandlingRequest
+        : BddSpecs
+    {
+        SpyRequest request;
+        Response response;
+
+        protected override void Given()
+        {
+            IoC.Container = null;
+            new ServiceLayerConfiguration(GetType().Assembly, GetType().Assembly, typeof(Agatha.Castle.Container))
+               .RegisterRequestHandlerInterceptor<FailingBeforeHandlingRequestInterceptor>()
+               .RegisterRequestHandlerInterceptor<SubSequentInterceptor>()
+               .Initialize();
+
+            request = new SpyRequest();
+        }
+
+        protected override void When()
+        {
+            using (var requestProcessor = IoC.Container.Resolve<IRequestProcessor>())
+            {
+                response = requestProcessor.Process(request).SingleOrDefault();
+            }
+        }
+
+        [Fact]
+        public void The_subsequent_interceptor_should_not_be_called()
+        {
+            Assert.Null(request.SubSequentInterceptorBeforeProcessingTimeStamp);
+            Assert.Null(request.SubSequentInterceptorAfterProcessingTimeStamp);
+        }
+
+        [Fact]
+        public void The_AfterHandlingRequest_should_not_be_called_for_first_interceptor()
+        {
+            Assert.Null(request.AfterProcessingTimeStamp);
+        }
+
+        [Fact]
+        public void The_response_should_contain_error()
+        {
+            Assert.NotNull(response.Exception);
+            Assert.NotEqual(response.ExceptionType, ExceptionType.None);
+        }
+
+        [Fact]
+        public void All_interceptors_are_disposed()
+        {
+            Assert.True(FailingBeforeHandlingRequestInterceptor.Disposed);
+            Assert.True(SubSequentInterceptor.Disposed);
+        }
+    }
+
+    public class Given_the_second_interceptor_fails_on_AfterHandlingRequest
+        : BddSpecs
+    {
+        SpyRequest request;
+        Response response;
+
+        protected override void Given()
+        {
+            IoC.Container = null;
+            new ServiceLayerConfiguration(GetType().Assembly, GetType().Assembly, typeof(Agatha.Castle.Container))
+               .RegisterRequestHandlerInterceptor<TestInterceptor>()
+               .RegisterRequestHandlerInterceptor<FailingBeforeHandlingRequestInterceptor>()
+               .Initialize();
+
+            request = new SpyRequest();
+        }
+
+        protected override void When()
+        {
+            using (var requestProcessor = IoC.Container.Resolve<IRequestProcessor>())
+            {
+                response = requestProcessor.Process(request).SingleOrDefault();
+            }
+        }
+
+        [Fact]
+        public void The_first_interceptor_AfterHandlingRequest_should_be_called()
+        {
+            Assert.NotNull(request.AfterProcessingTimeStamp);
+        }
+
+        [Fact]
+        public void The_response_should_contain_error()
+        {
+            Assert.NotNull(response.Exception);
+            Assert.NotEqual(response.ExceptionType, ExceptionType.None);
+        }
+
+        [Fact]
+        public void All_interceptors_are_disposed()
+        {
+            Assert.True(FailingBeforeHandlingRequestInterceptor.Disposed);
+            Assert.True(SubSequentInterceptor.Disposed);
+        }
+    }
 }
