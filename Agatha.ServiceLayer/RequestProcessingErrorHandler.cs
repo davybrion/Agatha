@@ -69,7 +69,7 @@ namespace Agatha.ServiceLayer
         private Type TryBasedOnCachedResponse(RequestProcessingContext context)
         {
             var cacheManager = IoC.Container.Resolve<ICacheManager>();
-            if(cacheManager.IsCachingEnabledFor(context.Request.GetType()))
+            if (cacheManager.IsCachingEnabledFor(context.Request.GetType()))
             {
                 var response = cacheManager.GetCachedResponseFor(context.Request);
                 if (response != null) return response.GetType();
@@ -79,14 +79,22 @@ namespace Agatha.ServiceLayer
 
         private Type TryBasedOnRequestHandler(RequestProcessingContext context)
         {
+            IRequestHandler handler = null;
             try
             {
-                var handler = (IRequestHandler)IoC.Container.Resolve(GetRequestHandlerTypeFor(context.Request));
+                handler = (IRequestHandler)IoC.Container.Resolve(GetRequestHandlerTypeFor(context.Request));
                 return handler.CreateDefaultResponse().GetType();
             }
             catch
             {
                 return null;
+            }
+            finally
+            {
+                if (handler != null)
+                {
+                    IoC.Container.Release(handler);
+                }
             }
         }
 
