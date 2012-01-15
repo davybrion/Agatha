@@ -301,7 +301,7 @@ namespace Tests.RequestProcessorTests.Interceptors
         public void All_interceptors_are_disposed()
         {
             Assert.True(FailingBeforeHandlingRequestInterceptor.Disposed);
-            Assert.True(SubSequentInterceptor.Disposed);
+            Assert.True(TestInterceptor.Disposed);
         }
     }
 }

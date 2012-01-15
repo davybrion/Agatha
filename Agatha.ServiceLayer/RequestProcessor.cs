@@ -79,12 +79,16 @@ namespace Agatha.ServiceLayer
                 {
                     try
                     {
-                        Exception lastExceptionFromInterceptor = RunInvokedInterceptorsSafely(requestProcessingState, invokedInterceptors);
-                        if (lastExceptionFromInterceptor != null)
+                        var possibleExceptionsFromInterceptors = RunInvokedInterceptorsSafely(requestProcessingState, invokedInterceptors);
+
+                        if (possibleExceptionsFromInterceptors.Count() > 0)
                         {
-                            logger.Error(lastExceptionFromInterceptor);
+                            foreach (var exceptionFromInterceptor in possibleExceptionsFromInterceptors)
+                            {
+                                logger.Error(exceptionFromInterceptor);
+                            }
                             exceptionsPreviouslyOccurred = true;
-                            errorHandler.DealWithException(requestProcessingState, lastExceptionFromInterceptor);
+                            errorHandler.DealWithException(requestProcessingState, possibleExceptionsFromInterceptors.ElementAt(0));
                         }
                     }
                     finally
@@ -120,9 +124,9 @@ namespace Agatha.ServiceLayer
             }
         }
 
-        private Exception RunInvokedInterceptorsSafely(RequestProcessingContext requestProcessingState, IList<IRequestHandlerInterceptor> invokedInterceptors)
+        private IEnumerable<Exception> RunInvokedInterceptorsSafely(RequestProcessingContext requestProcessingState, IList<IRequestHandlerInterceptor> invokedInterceptors)
         {
-            Exception lastExceptionFromInteceptor = null;
+            var exceptionsFromInterceptor = new List<Exception>();
             foreach (var interceptor in invokedInterceptors.Reverse())
             {
                 try
@@ -131,11 +135,11 @@ namespace Agatha.ServiceLayer
                 }
                 catch (Exception exc)
                 {
-                    lastExceptionFromInteceptor = exc;
+                    exceptionsFromInterceptor.Add(exc);
                 }
             }
 
-            return lastExceptionFromInteceptor;
+            return exceptionsFromInterceptor;
         }
 
         private void DisposeInterceptorsSafely(IList<IRequestHandlerInterceptor> interceptors)
