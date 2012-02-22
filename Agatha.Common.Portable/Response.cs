@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using Agatha.Common.WCF;
 
 namespace Agatha.Common
 {
+    [CLSCompliant(true)]
 	[DataContract]
 	public class Response
 	{
