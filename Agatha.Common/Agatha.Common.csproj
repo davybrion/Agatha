@@ -100,6 +100,8 @@
     <Compile Include="Disposable.cs" />
     <Compile Include="EnableClientResponseCachingAttribute.cs" />
     <Compile Include="EnableServiceResponseCachingAttribute.cs" />
+    <Compile Include="ExceptionInfo.cs" />
+    <Compile Include="ExceptionType.cs" />
     <Compile Include="IAsyncRequestProcessor.cs" />
     <Compile Include="IEnableResponseCachingAttribute.cs" />
     <Compile Include="Caching\CachingInterceptor.cs" />
@@ -123,7 +125,9 @@
     <Compile Include="WCF\IWcfRestJsonRequestProcessor.cs" />
     <Compile Include="WCF\IWcfRestXmlRequestProcessor.cs" />
     <Compile Include="WCF\KnownTypeProvider.cs" />
+    <Compile Include="Request.cs" />
     <Compile Include="IRequestProcessor.cs" />
+    <Compile Include="Response.cs" />
     <Compile Include="WCF\RequestProcessorProxy.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -146,12 +150,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Agatha.Common.Portable\Agatha.Common.Portable.csproj">
-      <Project>{DDF2A1ED-27FB-4126-9695-98136F4BD123}</Project>
-      <Name>Agatha.Common.Portable</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

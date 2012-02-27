@@ -125,6 +125,12 @@
     <Compile Include="..\Agatha.Common\EnableServiceResponseCachingAttribute.cs">
       <Link>EnableServiceResponseCachingAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\Agatha.Common\ExceptionInfo.cs">
+      <Link>ExceptionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\ExceptionType.cs">
+      <Link>ExceptionType.cs</Link>
+    </Compile>
     <Compile Include="..\Agatha.Common\IAsyncRequestProcessor.cs">
       <Link>IAsyncRequestProcessor.cs</Link>
     </Compile>
@@ -151,6 +157,12 @@
     </Compile>
     <Compile Include="..\Agatha.Common\ReceivedResponses.cs">
       <Link>ReceivedResponses.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\Request.cs">
+      <Link>Request.cs</Link>
+    </Compile>
+    <Compile Include="..\Agatha.Common\Response.cs">
+      <Link>Response.cs</Link>
     </Compile>
     <Compile Include="..\Agatha.Common\ResponseReceiver.cs">
       <Link>ResponseReceiver.cs</Link>
@@ -189,12 +201,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Agatha.Common.Portable\Agatha.Common.Portable.csproj">
-      <Project>{DDF2A1ED-27FB-4126-9695-98136F4BD123}</Project>
-      <Name>Agatha.Common.Portable</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

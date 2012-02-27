@@ -71,10 +71,6 @@
     <Compile Include="MoreTestTypes.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Agatha.Common.Portable\Agatha.Common.Portable.csproj">
-      <Project>{DDF2A1ED-27FB-4126-9695-98136F4BD123}</Project>
-      <Name>Agatha.Common.Portable</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Agatha.Common\Agatha.Common.csproj">
       <Project>{53EBF9A4-A518-483A-9842-5E5FBE6495F8}</Project>
       <Name>Agatha.Common</Name>

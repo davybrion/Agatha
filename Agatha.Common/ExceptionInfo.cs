@@ -4,7 +4,6 @@ using System.Text;
 
 namespace Agatha.Common
 {
-    [CLSCompliant(true)]
 	public class ExceptionInfo
 	{
 		public ExceptionInfo InnerException { get; set; }
