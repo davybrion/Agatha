@@ -93,6 +93,10 @@
     <Compile Include="WCF\WcfRequestProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Agatha.Common.Portable\Agatha.Common.Portable.csproj">
+      <Project>{CDB3BDC4-D091-44F7-820F-E4373921114E}</Project>
+      <Name>Agatha.Common.Portable</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Agatha.Common\Agatha.Common.csproj">
       <Project>{53EBF9A4-A518-483A-9842-5E5FBE6495F8}</Project>
       <Name>Agatha.Common</Name>

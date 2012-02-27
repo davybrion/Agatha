@@ -119,23 +119,8 @@
     <Compile Include="..\Agatha.Common\Disposable.cs">
       <Link>Disposable.cs</Link>
     </Compile>
-    <Compile Include="..\Agatha.Common\EnableClientResponseCachingAttribute.cs">
-      <Link>EnableClientResponseCachingAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\EnableServiceResponseCachingAttribute.cs">
-      <Link>EnableServiceResponseCachingAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\ExceptionInfo.cs">
-      <Link>ExceptionInfo.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\ExceptionType.cs">
-      <Link>ExceptionType.cs</Link>
-    </Compile>
     <Compile Include="..\Agatha.Common\IAsyncRequestProcessor.cs">
       <Link>IAsyncRequestProcessor.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\IEnableResponseCachingAttribute.cs">
-      <Link>IEnableResponseCachingAttribute.cs</Link>
     </Compile>
     <Compile Include="..\Agatha.Common\InversionOfControl\IContainer.cs">
       <Link>InversionOfControl\IContainer.cs</Link>
@@ -149,20 +134,11 @@
     <Compile Include="..\Agatha.Common\IRequestProcessor.cs">
       <Link>IRequestProcessor.cs</Link>
     </Compile>
-    <Compile Include="..\Agatha.Common\OneWayRequest.cs">
-      <Link>OneWayRequest.cs</Link>
-    </Compile>
     <Compile Include="..\Agatha.Common\ProcessRequestsAsyncCompletedArgs.cs">
       <Link>ProcessRequestsAsyncCompletedArgs.cs</Link>
     </Compile>
     <Compile Include="..\Agatha.Common\ReceivedResponses.cs">
       <Link>ReceivedResponses.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\Request.cs">
-      <Link>Request.cs</Link>
-    </Compile>
-    <Compile Include="..\Agatha.Common\Response.cs">
-      <Link>Response.cs</Link>
     </Compile>
     <Compile Include="..\Agatha.Common\ResponseReceiver.cs">
       <Link>ResponseReceiver.cs</Link>
@@ -201,7 +177,12 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Agatha.Common.Portable\Agatha.Common.Portable.csproj">
+      <Project>{CDB3BDC4-D091-44F7-820F-E4373921114E}</Project>
+      <Name>Agatha.Common.Portable</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

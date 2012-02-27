@@ -90,6 +90,10 @@
     <None Include="agatha.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Agatha.Common.Portable\Agatha.Common.Portable.csproj">
+      <Project>{CDB3BDC4-D091-44F7-820F-E4373921114E}</Project>
+      <Name>Agatha.Common.Portable</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Agatha.Common.Silverlight\Agatha.Common.Silverlight.csproj">
       <Project>{CD6FA3BD-DA5E-4E65-89B4-DDA81F50729F}</Project>
       <Name>Agatha.Common.Silverlight</Name>
