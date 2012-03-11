@@ -194,7 +194,7 @@ namespace Agatha.ServiceLayer
 
         protected virtual void OnHandlerException(Request request, Exception exception)
         {
-            logger.Error("RequestProcessor: unhandled exception while handling request!", exception);
+            logger.Error(exception.Message, exception);
         }
 
         public void ProcessOneWayRequests(params OneWayRequest[] requests)
