@@ -71,7 +71,7 @@ namespace Agatha.ServiceLayer
                 }
                 catch (Exception exc)
                 {
-                    logger.Error(exc);
+                    logger.Error(exc.Message, exc);
                     exceptionsPreviouslyOccurred = true;
                     errorHandler.DealWithException(requestProcessingState, exc);
                 }
@@ -194,7 +194,6 @@ namespace Agatha.ServiceLayer
 
         protected virtual void OnHandlerException(Request request, Exception exception)
         {
-            logger.Error(exception.Message, exception);
         }
 
         public void ProcessOneWayRequests(params OneWayRequest[] requests)
@@ -230,7 +229,7 @@ namespace Agatha.ServiceLayer
                 }
                 catch (Exception e)
                 {
-                    logger.Error(e);
+                    logger.Error(e.Message, e);
                     throw;
                 }
             }
@@ -257,7 +256,6 @@ namespace Agatha.ServiceLayer
 
         protected virtual void OnHandlerException(OneWayRequest request, Exception exception)
         {
-            logger.Error("RequestProcessor: unhandled exception while handling request!", exception);
         }
     }
 }
