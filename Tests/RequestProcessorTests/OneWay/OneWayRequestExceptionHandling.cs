@@ -93,7 +93,7 @@ namespace Tests.RequestProcessorTests.OneWay
 
             logger.AssertWasCalled(
                 l => l.Error(
-                    Arg<string>.Matches(arg => arg == "RequestProcessor: unhandled exception while handling request!"),
+                    Arg<string>.Is.NotNull,
                     Arg<Exception>.Matches(arg => arg.GetType() == exceptionType)),
                 options => options.Repeat.Times(times));
         }

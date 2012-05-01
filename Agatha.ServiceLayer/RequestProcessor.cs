@@ -230,7 +230,6 @@ namespace Agatha.ServiceLayer
                 catch (Exception e)
                 {
                     logger.Error(e.Message, e);
-                    throw;
                 }
             }
         }
@@ -251,6 +250,7 @@ namespace Agatha.ServiceLayer
             catch (Exception e)
             {
                 OnHandlerException(request, e);
+                throw;
             }
         }
 
