@@ -63,7 +63,7 @@ namespace Agatha.Castle
 			windsorContainer.Release(component);
 		}
 
-		private static ComponentRegistration<TInterface> AddLifeStyleToRegistration<TInterface>(Lifestyle lifestyle, ComponentRegistration<TInterface> registration)
+        private static ComponentRegistration<TInterface> AddLifeStyleToRegistration<TInterface>(Lifestyle lifestyle, ComponentRegistration<TInterface> registration) where TInterface : class
 		{
 			if (lifestyle == Lifestyle.Singleton)
 			{

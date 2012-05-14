@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Agatha.Common;
-using Castle.Core;
+using Castle.Core.Internal;
 using QuickDotNetCheck;
 using QuickGenerate;
 using Tests.RequestProcessorTests.RequestResponse.Act.Helpers;
