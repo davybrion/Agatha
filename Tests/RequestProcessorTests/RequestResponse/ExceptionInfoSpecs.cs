@@ -1,7 +1,7 @@
 ﻿using System;
 using Agatha.Common;
 using QuickDotNetCheck;
-using Castle.Core;
+using Castle.Core.Internal;
 using Tests.RequestProcessorTests.RequestResponse.Act;
 using Xunit;
 
