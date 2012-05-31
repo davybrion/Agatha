@@ -10,7 +10,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Agatha Request/Response Service Layer - Common, for Ninject. Don't forget to install Agatha-ServiceLayer-Ninject as well for the server-side bits</description>
     <dependencies>
-      <dependency id="Ninject" version="2.2.1.4" />
+      <dependency id="Ninject" version="3.0.1.10" />
     </dependencies>
   </metadata>
 </package>
