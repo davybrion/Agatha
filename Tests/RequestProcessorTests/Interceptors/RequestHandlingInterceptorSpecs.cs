@@ -304,4 +304,47 @@ namespace Tests.RequestProcessorTests.Interceptors
             Assert.True(TestInterceptor.Disposed);
         }
     }
+
+    public class Given_the_request_is_a_OneWay_request : BddSpecs
+    {
+        private OneWaySpyRequest request;
+        
+        protected override void Given()
+        {
+            IoC.Container = null;
+            new ServiceLayerConfiguration(GetType().Assembly, GetType().Assembly, typeof(Agatha.Castle.Container))
+               .RegisterRequestHandlerInterceptor<OneWaySpyRequestInterceptor>()
+               .Initialize();
+
+            request = new OneWaySpyRequest();
+        }
+
+        protected override void When()
+        {
+            using (var requestProcessor = IoC.Container.Resolve<IRequestProcessor>())
+            {
+                requestProcessor.ProcessOneWayRequests(request);
+            }
+        }
+
+        [Fact]
+        public void Its_BeforeHandlingRequest_method_should_be_invoked_before_handling_a_request()
+        {
+            Assert.True(request.BeforeProcessingTimeStamp < request.RequestHandlingTimeStamp);
+        }
+
+        [Fact]
+        public void Its_AfterHandlingRequest_method_should_be_invoked_after_handling_a_request()
+        {
+            Assert.True(request.AfterProcessingTimeStamp > request.RequestHandlingTimeStamp);
+        }
+
+        [Fact]
+        public void All_interceptors_are_disposed()
+        {
+            Assert.True(OneWaySpyRequestInterceptor.Disposed);
+        }
+
+       
+    }
 }

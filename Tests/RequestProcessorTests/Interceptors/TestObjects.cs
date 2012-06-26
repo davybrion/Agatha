@@ -16,6 +16,17 @@ namespace Tests.RequestProcessorTests.Interceptors
         public Response ResponseFromContext { get; set; }
     }
 
+    public class OneWaySpyRequest : OneWayRequest
+    {
+        public DateTime? BeforeProcessingTimeStamp { get; set; }
+        public DateTime? SubSequentInterceptorBeforeProcessingTimeStamp { get; set; }
+        public DateTime? RequestHandlingTimeStamp { get; set; }
+        public DateTime? AfterProcessingTimeStamp { get; set; }
+        public DateTime? SubSequentInterceptorAfterProcessingTimeStamp { get; set; }
+
+        public Response ResponseFromContext { get; set; }
+    }
+
     public class SpyResponse : Response { }
 
     public class InterceptedSpyRequest : SpyRequest
@@ -43,6 +54,36 @@ namespace Tests.RequestProcessorTests.Interceptors
         public void AfterHandlingRequest(RequestProcessingContext context)
         {
             var testRequest = (SpyRequest)context.Request;
+            testRequest.AfterProcessingTimeStamp = SystemClock.Now();
+            testRequest.ResponseFromContext = context.Response;
+            Thread.Sleep(50);
+        }
+
+        protected override void DisposeManagedResources()
+        {
+            Disposed = true;
+        }
+    }
+
+    public class OneWaySpyRequestInterceptor : Disposable, IRequestHandlerInterceptor
+    {
+        public static bool Disposed { get; private set; }
+
+        public OneWaySpyRequestInterceptor()
+        {
+            Disposed = false;
+        }
+
+        public virtual void BeforeHandlingRequest(RequestProcessingContext context)
+        {
+            var testRequest = (OneWaySpyRequest)context.Request;
+            testRequest.BeforeProcessingTimeStamp = SystemClock.Now();
+            Thread.Sleep(50);
+        }
+
+        public void AfterHandlingRequest(RequestProcessingContext context)
+        {
+            var testRequest = (OneWaySpyRequest)context.Request;
             testRequest.AfterProcessingTimeStamp = SystemClock.Now();
             testRequest.ResponseFromContext = context.Response;
             Thread.Sleep(50);
@@ -120,6 +161,15 @@ namespace Tests.RequestProcessorTests.Interceptors
             spyRequest.RequestHandlingTimeStamp = SystemClock.Now();
             Thread.Sleep(50);
             return CreateDefaultResponse();
+        }
+    }
+
+    public class OneWaySpyRequestHandler : OneWayRequestHandler<OneWaySpyRequest>
+    {
+        public override void Handle(OneWaySpyRequest request)
+        {
+            request.RequestHandlingTimeStamp = SystemClock.Now();
+            Thread.Sleep(50);
         }
     }
 
