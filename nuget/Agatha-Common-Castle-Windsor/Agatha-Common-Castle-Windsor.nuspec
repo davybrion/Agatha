@@ -10,7 +10,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Agatha Request/Response Service Layer - Common, for Castle Windsor. Don't forget to install Agatha-ServiceLayer-Castle-Windsor as well for the server-side bits</description>
     <dependencies>
-      <dependency id="Castle.Windsor" version="2.5.3" />
+      <dependency id="Castle.Windsor" version="3.0.0" />
     </dependencies>
   </metadata>
 </package>
