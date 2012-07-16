@@ -7,8 +7,8 @@ namespace Sample.SilverlightClient
 	{
 		public static void Register()
 		{
-			new ClientConfiguration(typeof(HelloWorldRequest).Assembly, typeof(Agatha.Unity.Container)).Initialize();
-			//new ClientConfiguration(typeof(HelloWorldRequest).Assembly, typeof(Agatha.Castle.Container)).Initialize();
+			//new ClientConfiguration(typeof(HelloWorldRequest).Assembly, typeof(Agatha.Unity.Container)).Initialize();
+			new ClientConfiguration(typeof(HelloWorldRequest).Assembly, typeof(Agatha.Castle.Container)).Initialize();
 			//new ClientConfiguration(typeof(HelloWorldRequest).Assembly, typeof(Agatha.Ninject.Container)).Initialize();
 		}
 	}
