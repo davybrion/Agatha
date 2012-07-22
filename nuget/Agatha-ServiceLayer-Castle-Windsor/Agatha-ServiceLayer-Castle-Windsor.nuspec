@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Agatha-ServiceLayer-Castle-Windsor</id>
-    <version>1.3</version>
+    <version>1.3.1</version>
     <authors>Davy Brion</authors>
     <owners>davybrion</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
@@ -10,7 +10,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Agatha Request/Response Service Layer - Server-side bits, for Castle Windsor.</description>
     <dependencies>
-      <dependency id="Agatha-Common-Castle-Windsor" version="1.3" />
+      <dependency id="Agatha-Common-Castle-Windsor" version="1.3.1" />
 	  <dependency id="Common.Logging" version="2.0.0" />
     </dependencies>
   </metadata>

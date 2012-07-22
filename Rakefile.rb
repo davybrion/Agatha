@@ -1,6 +1,6 @@
 require 'albacore'
 
-version = "1.3.0"
+version = "1.3.1"
 common_dir = "Common"
 build_configuration = "Release"
 
