@@ -38,7 +38,9 @@ namespace Agatha.ServiceLayer.Conventions
                 return;
 
             requestResponseMappings.Add(requestType, responseType);
-            responseRequestMappings.Add(responseType, requestType);
+
+            if (!responseRequestMappings.ContainsKey(responseType))
+                responseRequestMappings.Add(responseType, requestType);
         }
 
         private Type FindHandlerBase(Type handlerType)

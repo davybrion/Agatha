@@ -71,7 +71,7 @@ namespace Agatha.ServiceLayer
                 }
                 catch (Exception exc)
                 {
-                    logger.Error(exc.Message, exc);
+                    logger.Error(exc.ToString(), exc);
                     exceptionsPreviouslyOccurred = true;
                     errorHandler.DealWithException(requestProcessingState, exc);
                 }
@@ -85,7 +85,7 @@ namespace Agatha.ServiceLayer
                         {
                             foreach (var exceptionFromInterceptor in possibleExceptionsFromInterceptors)
                             {
-                                logger.Error(exceptionFromInterceptor);
+                                logger.Error(exceptionFromInterceptor.ToString());
                             }
                             exceptionsPreviouslyOccurred = true;
                             errorHandler.DealWithException(requestProcessingState, possibleExceptionsFromInterceptors.ElementAt(0));
@@ -97,6 +97,8 @@ namespace Agatha.ServiceLayer
                     }
                 }
             }
+
+            
             var responses = processingContexts.Select(c => c.Response).ToArray();
 
             AfterProcessing(requests, responses);
@@ -109,17 +111,40 @@ namespace Agatha.ServiceLayer
             var request = requestProcessingState.Request;
 
             BeforeResolvingRequestHandler(request);
+            HandleRequest(requestProcessingState);
+        }
 
-            using (var handler = (IRequestHandler)IoC.Container.Resolve(GetRequestHandlerTypeFor(request)))
+        private void HandleRequest(RequestProcessingContext requestProcessingState)
+        {
+            var request = requestProcessingState.Request;
+
+            if (request is OneWayRequest)
             {
-                try
+                using (var handler = (IOneWayRequestHandler)IoC.Container.Resolve(GetOneWayRequestHandlerTypeFor(request)))
                 {
-                    var response = GetResponseFromHandler(request, handler);
-                    requestProcessingState.MarkAsProcessed(response);
+                    try
+                    {
+                        ExecuteHandler((OneWayRequest)request, handler);
+                    }
+                    finally
+                    {
+                        IoC.Container.Release(handler);
+                    }
                 }
-                finally
+            }
+            else
+            {
+                using (var handler = (IRequestHandler)IoC.Container.Resolve(GetRequestHandlerTypeFor(request)))
                 {
-                    IoC.Container.Release(handler);
+                    try
+                    {
+                        var response = GetResponseFromHandler(request, handler);
+                        requestProcessingState.MarkAsProcessed(response);
+                    }
+                    finally
+                    {
+                        IoC.Container.Release(handler);
+                    }
                 }
             }
         }
@@ -198,40 +223,7 @@ namespace Agatha.ServiceLayer
 
         public void ProcessOneWayRequests(params OneWayRequest[] requests)
         {
-            if (requests == null) return;
-
-            BeforeProcessing(requests);
-
-            DispatchRequestsToHandlers(requests);
-
-            AfterProcessing(requests, null);
-        }
-
-        private void DispatchRequestsToHandlers(OneWayRequest[] requests)
-        {
-            foreach (var request in requests)
-            {
-                try
-                {
-                    BeforeResolvingRequestHandler(request);
-
-                    using (var handler = (IOneWayRequestHandler)IoC.Container.Resolve(GetOneWayRequestHandlerTypeFor(request)))
-                    {
-                        try
-                        {
-                            ExecuteHandler(request, handler);
-                        }
-                        finally
-                        {
-                            IoC.Container.Release(handler);
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    logger.Error(e.Message, e);
-                }
-            }
+            Process(requests);
         }
 
         private static Type GetOneWayRequestHandlerTypeFor(Request request)
