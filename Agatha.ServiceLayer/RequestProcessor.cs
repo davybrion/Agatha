@@ -45,6 +45,7 @@ namespace Agatha.ServiceLayer
             BeforeProcessing(requests);
 
             var processingContexts = requests.Select(request => new RequestProcessingContext(request)).ToList();
+
             foreach (var requestProcessingState in processingContexts)
             {
                 if (exceptionsPreviouslyOccurred)
@@ -52,8 +53,10 @@ namespace Agatha.ServiceLayer
                     errorHandler.DealWithPreviouslyOccurredExceptions(requestProcessingState);
                     continue;
                 }
+
                 IList<IRequestHandlerInterceptor> interceptors = new List<IRequestHandlerInterceptor>();
                 IList<IRequestHandlerInterceptor> invokedInterceptors = new List<IRequestHandlerInterceptor>();
+                
                 try
                 {
                     interceptors = ResolveInterceptors();
@@ -71,7 +74,7 @@ namespace Agatha.ServiceLayer
                 }
                 catch (Exception exc)
                 {
-                    logger.Error(exc.ToString(), exc);
+                    logger.Error(exc.Message, exc);
                     exceptionsPreviouslyOccurred = true;
                     errorHandler.DealWithException(requestProcessingState, exc);
                 }
@@ -81,11 +84,11 @@ namespace Agatha.ServiceLayer
                     {
                         var possibleExceptionsFromInterceptors = RunInvokedInterceptorsSafely(requestProcessingState, invokedInterceptors);
 
-                        if (possibleExceptionsFromInterceptors.Count() > 0)
+                        if (possibleExceptionsFromInterceptors.Any())
                         {
                             foreach (var exceptionFromInterceptor in possibleExceptionsFromInterceptors)
                             {
-                                logger.Error(exceptionFromInterceptor.ToString());
+                                logger.Error(exceptionFromInterceptor);
                             }
                             exceptionsPreviouslyOccurred = true;
                             errorHandler.DealWithException(requestProcessingState, possibleExceptionsFromInterceptors.ElementAt(0));
@@ -97,7 +100,6 @@ namespace Agatha.ServiceLayer
                     }
                 }
             }
-
             
             var responses = processingContexts.Select(c => c.Response).ToArray();
 
@@ -108,9 +110,7 @@ namespace Agatha.ServiceLayer
 
         private void InvokeRequestHandler(RequestProcessingContext requestProcessingState)
         {
-            var request = requestProcessingState.Request;
-
-            BeforeResolvingRequestHandler(request);
+            BeforeResolvingRequestHandler(requestProcessingState.Request);
             HandleRequest(requestProcessingState);
         }
 
