@@ -42,6 +42,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{4C1784
 		Common\CommonAssemblyInfo.cs = Common\CommonAssemblyInfo.cs
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agatha.Autofac", "Agatha.Autofac\Agatha.Autofac.csproj", "{7C56C995-FCF7-4CBF-9F58-116B370863FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,10 @@ Global
 		{142F03BA-5E44-4EF1-936F-17C9557BBB17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{142F03BA-5E44-4EF1-936F-17C9557BBB17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{142F03BA-5E44-4EF1-936F-17C9557BBB17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C56C995-FCF7-4CBF-9F58-116B370863FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C56C995-FCF7-4CBF-9F58-116B370863FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C56C995-FCF7-4CBF-9F58-116B370863FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C56C995-FCF7-4CBF-9F58-116B370863FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
