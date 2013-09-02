@@ -29,30 +29,34 @@ namespace Tests.RequestProcessorTests.RequestResponse.Act
                     .With<Request>(opt => opt.StartingValue(
                         () =>
                             new Request[]
-                                {
-                                    new FirstRequest(),
-                                    new SecondRequest(),
-                                    new ThirdRequest(),
-                                    new FourthRequest(),
-                                    new FifthRequest(), 
-                                    new FirstCachedRequest(),
-                                    new SecondCachedRequest()
-                                }.PickOne()))
+                            {
+                                new FirstRequest(),
+                                new SecondRequest(),
+                                new ThirdRequest(),
+                                new FourthRequest(),
+                                new FifthRequest(),
+                                new SixthRequest(),
+                                new SeventhRequest(), 
+                                new FirstCachedRequest(),
+                                new SecondCachedRequest()
+                            }.PickOne()))
                     .With(
-                            new DescribedAction { Exception = null, Description = "Does nothing" },
-                            new DescribedAction { Exception = new BusinessException(), Description = "Throws BusinessException" },
-                            new DescribedAction { Exception = new SecurityException(), Description = "Throws SecurityException" },
-                            new DescribedAction { Exception = new UnknownException(), Description = "Throws UnknownException" },
-                            new DescribedAction { Exception = new AnotherUnknownException(), Description = "Throws AnotherUnknownException" });
+                        new DescribedAction { Exception = null, Description = "Does nothing" },
+                        new DescribedAction { Exception = new BusinessException(), Description = "Throws BusinessException" },
+                        new DescribedAction { Exception = new SecurityException(), Description = "Throws SecurityException" },
+                        new DescribedAction { Exception = new UnknownException(), Description = "Throws UnknownException" },
+                        new DescribedAction { Exception = new AnotherUnknownException(), Description = "Throws AnotherUnknownException" },
+                        new DescribedAction { Exception = new SubTypeOfBusinessException(), Description = "Throws a subtype of BusinessException" },
+                        new DescribedAction { Exception = new SubTypeOfSecurityException(), Description = "Throws a subtype of SecurityException" });
 
             IoC.Container = new Agatha.Castle.Container();
 
             new ServiceLayerConfiguration(Assembly.GetExecutingAssembly(), Assembly.GetExecutingAssembly(), IoC.Container)
-                {
-                    BusinessExceptionType = typeof(BusinessException),
-                    SecurityExceptionType = typeof(SecurityException),
-                    CacheManagerImplementation = typeof(CacheManagerSpy)
-                }.Initialize();
+            {
+                BusinessExceptionType = typeof(BusinessException),
+                SecurityExceptionType = typeof(SecurityException),
+                CacheManagerImplementation = typeof(CacheManagerSpy)
+            }.Initialize();
 
             // i want to take advantage of the automatic initialization, so i'm just resolving the requestprocessor instead of creating it
             RequestProcessor = IoC.Container.Resolve<IRequestProcessor>();
@@ -82,7 +86,7 @@ namespace Tests.RequestProcessorTests.RequestResponse.Act
             AbstractHandlerForTest handler;
             try
             {
-                handler = (AbstractHandlerForTest)IoC.Container.Resolve(type);                
+                handler = (AbstractHandlerForTest)IoC.Container.Resolve(type);
             }
             catch
             {

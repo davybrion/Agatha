@@ -13,6 +13,10 @@ namespace Tests.RequestProcessorTests
 	public class FourthResponse : Response {}
 	public class FifthRequest : Request {}
 	public class FifthResponse : Response {}
+    public class SixthRequest : Request { }
+    public class SixthResponse : Response { }
+    public class SeventhRequest : Request { }
+    public class SeventhResponse : Response { }
 
 	[EnableServiceResponseCaching(Seconds = 1)]
 	public class FirstCachedRequest : Request
@@ -73,9 +77,10 @@ namespace Tests.RequestProcessorTests
 	public class FirstOneWayRequest : OneWayRequest { }
 	public class SecondOneWayRequest : OneWayRequest { }
 	public class ThirdOneWayRequest : OneWayRequest { }
-
-	public class BusinessException : Exception { }
-	public class SecurityException : Exception { }
+    public class BusinessException : Exception { }
+    public class SubTypeOfBusinessException : BusinessException { }
+    public class SecurityException : Exception { }
+    public class SubTypeOfSecurityException : SecurityException { }
 	public class UnknownException : Exception { }
 	public class AnotherUnknownException : Exception { }
 }

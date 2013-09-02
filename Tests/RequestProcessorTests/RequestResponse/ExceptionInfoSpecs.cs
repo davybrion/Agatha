@@ -41,10 +41,23 @@ namespace Tests.RequestProcessorTests.RequestResponse
                 .IfAfter(ProcessRequestsState.Threw<BusinessException>);
         }
 
+        public Spec ProcessRequestsWithBusinessExceptionSubType()
+        {
+
+            return new Spec(() => EnsureExceptionInfoIsCorrect<SubTypeOfBusinessException>(ExceptionType.Business, output))
+                .IfAfter(ProcessRequestsState.Threw<SubTypeOfBusinessException>);
+        }
+
         public Spec ProcessRequestsWithSecurityException()
         {
             return new Spec(() => EnsureExceptionInfoIsCorrect<SecurityException>(ExceptionType.Security, output))
                 .IfAfter(ProcessRequestsState.Threw<SecurityException>);
+        }
+
+        public Spec ProcessRequestsWithSecurityExceptionSubType()
+        {
+            return new Spec(() => EnsureExceptionInfoIsCorrect<SubTypeOfSecurityException>(ExceptionType.Security, output))
+                .IfAfter(ProcessRequestsState.Threw<SubTypeOfSecurityException>);
         }
 
         public Spec ProcessRequestsWithUnknownException()
@@ -65,20 +78,20 @@ namespace Tests.RequestProcessorTests.RequestResponse
 
             return new Spec(
                 () =>
+                {
+                    int exceptionIndex = ProcessRequestsState.ExceptionsThrown.FindIndex(predicate);
+                    int responseIndex = exceptionIndex + 1;
+                    // WHY: +1 because we need the response _after_ the one that threw the first exception
+
+                    for (int i = responseIndex; i < output.Length; i++)
                     {
-                        int exceptionIndex = ProcessRequestsState.ExceptionsThrown.FindIndex(predicate);
-                        int responseIndex = exceptionIndex + 1;
-                            // WHY: +1 because we need the response _after_ the one that threw the first exception
+                        Ensure.Equal(ExceptionType.EarlierRequestAlreadyFailed, output[i].ExceptionType);
 
-                        for (int i = responseIndex; i < output.Length; i++)
-                        {
-                            Ensure.Equal(ExceptionType.EarlierRequestAlreadyFailed, output[i].ExceptionType);
-
-                            Ensure.Equal("EarlierRequestAlreadyFailed", output[i].Exception.Message);
-                            Ensure.Null(output[i].Exception.StackTrace);
-                            Ensure.Equal("System.Exception", output[i].Exception.Type);
-                        }
-                    })
+                        Ensure.Equal("EarlierRequestAlreadyFailed", output[i].Exception.Message);
+                        Ensure.Null(output[i].Exception.StackTrace);
+                        Ensure.Equal("System.Exception", output[i].Exception.Type);
+                    }
+                })
                 .IfAfter(ProcessRequestsState.ExceptionWasThrownBeforeLastRequest);
         }
     }
