@@ -107,7 +107,8 @@ namespace Agatha.ServiceLayer
         {
             var exceptionType = exception.GetType();
 
-            if (exceptionType.Equals(serviceLayerConfiguration.BusinessExceptionType))
+            if (serviceLayerConfiguration.BusinessExceptionType != null &&
+                serviceLayerConfiguration.BusinessExceptionType.IsAssignableFrom(exceptionType))
             {
                 response.ExceptionType = ExceptionType.Business;
                 SetExceptionFaultCode(exception, response.Exception);
@@ -115,7 +116,8 @@ namespace Agatha.ServiceLayer
                 return;
             }
 
-            if (exceptionType.Equals(serviceLayerConfiguration.SecurityExceptionType))
+            if (serviceLayerConfiguration.SecurityExceptionType != null &&
+                serviceLayerConfiguration.SecurityExceptionType.IsAssignableFrom(exceptionType))
             {
                 response.ExceptionType = ExceptionType.Security;
                 SetExceptionFaultCode(exception, response.Exception);
