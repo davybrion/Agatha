@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.ServiceModel;
+using System.Threading.Tasks;
 
 namespace Agatha.Common.WCF
 {
@@ -15,5 +16,7 @@ namespace Agatha.Common.WCF
         [OperationContract(Name = "ProcessOneWayRequests", IsOneWay = true)]
         [ServiceKnownType("GetKnownTypes", typeof(KnownTypeProvider))]
 		void ProcessOneWayRequests(params OneWayRequest[] requests);
+
+	    Task<Response[]> ProcessAsync(Request[] requests);
 	}
 }

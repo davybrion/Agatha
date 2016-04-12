@@ -153,13 +153,6 @@ namespace Tests.ConfigurationTests
 		}
 	}
 
-    public class ClientComponentResolvingWithCastle : ClientComponentResolving<Agatha.Castle.Container> { }
-
+    
     public class ClientComponentResolvingWithUnity : ClientComponentResolving<Agatha.Unity.Container> { }
-
-    public class ClientComponentResolvingWithNinject : ClientComponentResolving<Agatha.Ninject.Container> { }
-
-    public class ClientComponentResolvingWithStructureMap : ClientComponentResolving<Agatha.StructureMap.Container> { }
-
-    public class ClientComponentResolvingWithSpring : ClientComponentResolving<Agatha.Spring.Container> { }
 }

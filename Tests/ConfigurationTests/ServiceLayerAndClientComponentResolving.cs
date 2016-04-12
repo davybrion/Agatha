@@ -274,13 +274,7 @@ namespace Tests.ConfigurationTests
         }
 	}
 
-	public class ServiceLayerAndClientComponentResolvingWithCastle : ServiceLayerAndClientComponentResolving<Agatha.Castle.Container> { }
-
 	public class ServiceLayerAndClientComponentResolvingWithUnity : ServiceLayerAndClientComponentResolving<Agatha.Unity.Container> { }
 
-	public class ServiceLayerAndClientComponentResolvingWithNinject : ServiceLayerAndClientComponentResolving<Agatha.Ninject.Container> { }
-
-	public class ServiceLayerAndClientComponentResolvingWithStructureMap : ServiceLayerAndClientComponentResolving<Agatha.StructureMap.Container> { }
-
-	public class ServiceLayerAndClientComponentResolvingWithSpring : ServiceLayerAndClientComponentResolving<Agatha.Spring.Container> { }
+	
 }

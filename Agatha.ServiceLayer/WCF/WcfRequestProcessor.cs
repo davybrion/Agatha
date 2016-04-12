@@ -7,7 +7,7 @@ using System.ServiceModel.Web;
 using System.Collections.Specialized;
 using System.Linq;
 using System;
-using Agatha.ServiceLayer.WCF.Rest;
+using System.Threading.Tasks;
 
 namespace Agatha.ServiceLayer.WCF
 {
@@ -15,7 +15,7 @@ namespace Agatha.ServiceLayer.WCF
 	[ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
 	[AddMessageInspectorBehavior]
 	[AddErrorLoggingBehavior]
-	public class WcfRequestProcessor : IWcfRequestProcessor, IWcfRestJsonRequestProcessor, IWcfRestXmlRequestProcessor
+	public class WcfRequestProcessor : IWcfRequestProcessor
 	{
 		[TransactionFlow(TransactionFlowOption.Allowed)]
 		public Response[] Process(params Request[] requests)
@@ -54,26 +54,24 @@ namespace Agatha.ServiceLayer.WCF
 			}
 		}
 
-        public Response[] Process()
+        public async Task<Response[]> ProcessAsync(params Request[] requests)
         {
-            var collection = WebOperationContext.Current.IncomingRequest.UriTemplateMatch.QueryParameters;
+            using (var processor = IoC.Container.Resolve<IRequestProcessor>())
+            {
+                Response[] responses;
 
-            var builder = new RestRequestBuilder();
+                try
+                {
+                    responses = await processor.ProcessAsync(requests);
+                }
+                finally
+                {
+                    // IRequestProcessor is a transient component so we must release it
+                    IoC.Container.Release(processor);
+                }
 
-            var requests = builder.GetRequests(collection);
-
-            return Process(requests);
-        }
-
-        public void ProcessOneWayRequests()
-        {
-            var collection = WebOperationContext.Current.IncomingRequest.UriTemplateMatch.QueryParameters;
-
-            var builder = new RestRequestBuilder();
-
-            var requests = builder.GetOneWayRequests(collection);
-
-            ProcessOneWayRequests(requests);
+                return responses;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Agatha.Common;
 
 namespace Agatha.ServiceLayer
@@ -6,13 +7,14 @@ namespace Agatha.ServiceLayer
     public interface IRequestHandler : IDisposable
 	{
 		Response Handle(Request request);
+		Task<Response> HandleAsync(Request request);
 		Response CreateDefaultResponse();
-	}
+    }
 
     public interface IRequestHandler<TRequest> : IRequestHandler where TRequest : Request
 	{
 		Response Handle(TRequest request);
-	}
+    }
 
     public interface IOneWayRequestHandler : IDisposable
     {
@@ -37,6 +39,7 @@ namespace Agatha.ServiceLayer
     public abstract class RequestHandler : Disposable, IRequestHandler
 	{
 		public abstract Response Handle(Request request);
+		public abstract Task<Response> HandleAsync(Request request);
 		public abstract Response CreateDefaultResponse();
 
 		/// <summary>
@@ -74,10 +77,21 @@ namespace Agatha.ServiceLayer
 			return response;
 		}
 
-		public virtual void BeforeHandle(TRequest request) { }
+        public override Task<Response> HandleAsync(Request request)
+        {
+            var typedRequest = (TRequest)request;
+            BeforeHandle(typedRequest);
+            var response = HandleAsync(typedRequest);
+            AfterHandle(typedRequest);
+            return response;
+        }
+
+        public virtual void BeforeHandle(TRequest request) { }
 		public virtual void AfterHandle(TRequest request) { }
 
 		public abstract Response Handle(TRequest request);
+
+        public abstract Task<Response> HandleAsync(TRequest request);
 
 		public override Response CreateDefaultResponse()
 		{

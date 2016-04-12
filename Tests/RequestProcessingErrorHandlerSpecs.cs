@@ -1,8 +1,8 @@
-﻿using Agatha.Castle;
-using Agatha.Common;
+﻿using Agatha.Common;
 using Agatha.Common.Caching;
 using Agatha.Common.InversionOfControl;
 using Agatha.ServiceLayer;
+using Agatha.Unity;
 using Rhino.Mocks;
 using Tests.ConfigurationTests;
 using Xunit;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Agatha.Common;
 using Agatha.Common.InversionOfControl;
 using Common.Logging;
@@ -108,10 +109,88 @@ namespace Agatha.ServiceLayer
             return responses;
         }
 
+        public async Task<Response[]> ProcessAsync(Request[] requests)
+        {
+            if (requests == null) return null;
+
+            var exceptionsPreviouslyOccurred = false;
+
+            BeforeProcessing(requests);
+
+            var processingContexts = requests.Select(request => new RequestProcessingContext(request)).ToList();
+
+            foreach (var requestProcessingState in processingContexts)
+            {
+                if (exceptionsPreviouslyOccurred)
+                {
+                    errorHandler.DealWithPreviouslyOccurredExceptions(requestProcessingState);
+                    continue;
+                }
+
+                IList<IRequestHandlerInterceptor> interceptors = new List<IRequestHandlerInterceptor>();
+                IList<IRequestHandlerInterceptor> invokedInterceptors = new List<IRequestHandlerInterceptor>();
+
+                try
+                {
+                    interceptors = ResolveInterceptors();
+                    foreach (var interceptor in interceptors)
+                    {
+                        interceptor.BeforeHandlingRequest(requestProcessingState);
+                        invokedInterceptors.Add(interceptor);
+                        if (requestProcessingState.IsProcessed) break;
+                    }
+
+                    if (!requestProcessingState.IsProcessed)
+                    {
+                        await InvokeRequestHandlerAsync(requestProcessingState);
+                    }
+                }
+                catch (Exception exc)
+                {
+                    logger.Error(exc.Message, exc);
+                    exceptionsPreviouslyOccurred = true;
+                    errorHandler.DealWithException(requestProcessingState, exc);
+                }
+                finally
+                {
+                    try
+                    {
+                        var possibleExceptionsFromInterceptors = RunInvokedInterceptorsSafely(requestProcessingState, invokedInterceptors);
+
+                        if (possibleExceptionsFromInterceptors.Any())
+                        {
+                            foreach (var exceptionFromInterceptor in possibleExceptionsFromInterceptors)
+                            {
+                                logger.Error(exceptionFromInterceptor);
+                            }
+                            exceptionsPreviouslyOccurred = true;
+                            errorHandler.DealWithException(requestProcessingState, possibleExceptionsFromInterceptors.ElementAt(0));
+                        }
+                    }
+                    finally
+                    {
+                        DisposeInterceptorsSafely(interceptors);
+                    }
+                }
+            }
+
+            var responses = processingContexts.Select(c => c.Response).ToArray();
+
+            AfterProcessing(requests, responses);
+
+            return responses;
+        }
+
         private void InvokeRequestHandler(RequestProcessingContext requestProcessingState)
         {
             BeforeResolvingRequestHandler(requestProcessingState.Request);
             HandleRequest(requestProcessingState);
+        }
+
+        private async Task InvokeRequestHandlerAsync(RequestProcessingContext requestProcessingState)
+        {
+            BeforeResolvingRequestHandler(requestProcessingState.Request);
+            await HandleRequestAsync(requestProcessingState);
         }
 
         private void HandleRequest(RequestProcessingContext requestProcessingState)
@@ -139,6 +218,41 @@ namespace Agatha.ServiceLayer
                     try
                     {
                         var response = GetResponseFromHandler(request, handler);
+                        requestProcessingState.MarkAsProcessed(response);
+                    }
+                    finally
+                    {
+                        IoC.Container.Release(handler);
+                    }
+                }
+            }
+        }
+
+        private async Task HandleRequestAsync(RequestProcessingContext requestProcessingState)
+        {
+            var request = requestProcessingState.Request;
+
+            if (request is OneWayRequest)
+            {
+                using (var handler = (IOneWayRequestHandler)IoC.Container.Resolve(GetOneWayRequestHandlerTypeFor(request)))
+                {
+                    try
+                    {
+                        ExecuteHandler((OneWayRequest)request, handler);
+                    }
+                    finally
+                    {
+                        IoC.Container.Release(handler);
+                    }
+                }
+            }
+            else
+            {
+                using (var handler = (IRequestHandler)IoC.Container.Resolve(GetRequestHandlerTypeFor(request)))
+                {
+                    try
+                    {
+                        var response = await GetResponseFromHandlerAsync(request, handler);
                         requestProcessingState.MarkAsProcessed(response);
                     }
                     finally
@@ -206,6 +320,23 @@ namespace Agatha.ServiceLayer
             {
                 BeforeHandle(request);
                 var response = handler.Handle(request);
+                AfterHandle(request);
+                AfterHandle(request, response);
+                return response;
+            }
+            catch (Exception e)
+            {
+                OnHandlerException(request, e);
+                throw;
+            }
+        }
+
+        private async Task<Response> GetResponseFromHandlerAsync(Request request, IRequestHandler handler)
+        {
+            try
+            {
+                BeforeHandle(request);
+                var response = await handler.HandleAsync(request);
                 AfterHandle(request);
                 AfterHandle(request, response);
                 return response;

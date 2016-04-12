@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Agatha.Common;
 using Agatha.ServiceLayer;
 
@@ -18,6 +19,11 @@ namespace Tests.RequestProcessorTests.RequestResponse.Act.Helpers
             HandledRequest++;
             HandleAction(ExceptionsThrown);
             return new Response();
+        }
+
+        public Task<Response> HandleAsync(Request request)
+        {
+            throw new System.NotImplementedException();
         }
 
         public Response CreateDefaultResponse()

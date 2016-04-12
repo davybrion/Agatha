@@ -1,6 +1,7 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.Threading.Tasks;
 
 namespace Agatha.Common.WCF
 {
@@ -31,7 +32,12 @@ namespace Agatha.Common.WCF
 			return Channel.Process(requests);
 		}
 
-		public void ProcessOneWayRequests(params OneWayRequest[] requests)
+	    public async Task<Response[]> ProcessAsync(Request[] requests)
+	    {
+	        return await Channel.ProcessAsync(requests);
+	    }
+
+	    public void ProcessOneWayRequests(params OneWayRequest[] requests)
         {
 			Channel.ProcessOneWayRequests(requests);
         }

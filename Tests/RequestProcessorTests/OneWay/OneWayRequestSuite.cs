@@ -22,7 +22,7 @@ namespace Tests.RequestProcessorTests.OneWay
         public OneWayRequestSuite() 
             : base(40, 20)
         {
-            IoC.Container = new Agatha.Castle.Container();
+            IoC.Container = new Agatha.Unity.Container();
 
             serviceLayerConfiguration = new ServiceLayerConfiguration(Assembly.GetExecutingAssembly(), Assembly.GetExecutingAssembly(), IoC.Container)
                                             {

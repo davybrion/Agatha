@@ -49,7 +49,7 @@ namespace Tests.RequestProcessorTests.RequestResponse.Act
                         new DescribedAction { Exception = new SubTypeOfBusinessException(), Description = "Throws a subtype of BusinessException" },
                         new DescribedAction { Exception = new SubTypeOfSecurityException(), Description = "Throws a subtype of SecurityException" });
 
-            IoC.Container = new Agatha.Castle.Container();
+            IoC.Container = new Agatha.Unity.Container();
 
             new ServiceLayerConfiguration(Assembly.GetExecutingAssembly(), Assembly.GetExecutingAssembly(), IoC.Container)
             {

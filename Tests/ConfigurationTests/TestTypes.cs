@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Agatha.Common;
 using Agatha.ServiceLayer;
 
@@ -16,6 +17,11 @@ namespace Tests.ConfigurationTests
 		{
 			return CreateTypedResponse();
 		}
+
+	    public override Task<Response> HandleAsync(RequestA request)
+	    {
+	        throw new NotImplementedException();
+	    }
 	}
 
 	public class OneWayRequestHandlerA : OneWayRequestHandler<OneWayRequestA>
@@ -39,5 +45,10 @@ namespace Tests.ConfigurationTests
 		{
 			return CreateTypedResponse();
 		}
+
+	    public override Task<Response> HandleAsync(RequestX request)
+	    {
+	        throw new NotImplementedException();
+	    }
 	}
 }

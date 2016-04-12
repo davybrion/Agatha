@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Agatha.Common;
 using Agatha.ServiceLayer;
 
@@ -162,6 +163,11 @@ namespace Tests.RequestProcessorTests.Interceptors
             Thread.Sleep(50);
             return CreateDefaultResponse();
         }
+
+        public override Task<Response> HandleAsync(SpyRequest request)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class OneWaySpyRequestHandler : OneWayRequestHandler<OneWaySpyRequest>
@@ -178,6 +184,11 @@ namespace Tests.RequestProcessorTests.Interceptors
         public override Response Handle(InterceptedSpyRequest spyRequest)
         {
             throw new InvalidOperationException("The request handler should not be invoked");
+        }
+
+        public override Task<Response> HandleAsync(InterceptedSpyRequest request)
+        {
+            throw new NotImplementedException();
         }
     }
 

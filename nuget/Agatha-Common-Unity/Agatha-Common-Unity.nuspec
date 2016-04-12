@@ -2,15 +2,15 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Agatha-Common-Unity</id>
-    <version>1.3</version>
-    <authors>Davy Brion</authors>
-    <owners>davybrion</owners>
+    <version>2.0.0</version>
+    <authors>Davy Brion, Jochen Van Gasse</authors>
+    <owners>davybrion, jochenvangasse</owners>
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
-    <projectUrl>http://github.com/davybrion/agatha</projectUrl>
+    <projectUrl>http://github.com/jochenvangasse/agatha</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Agatha Request/Response Service Layer - Common, for Unity. Don't forget to install Agatha-ServiceLayer-Unity as well for the server-side bits</description>
     <dependencies>
-      <dependency id="Unity" version="2.1.505.0" />
+      <dependency id="Unity" version="3.5.1404.0" />
     </dependencies>
   </metadata>
 </package>

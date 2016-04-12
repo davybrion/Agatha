@@ -15,7 +15,7 @@ namespace Tests.RequestProcessorTests.Interceptors
         protected override void Given()
         {
             IoC.Container = null;
-            new ServiceLayerConfiguration(GetType().Assembly, GetType().Assembly, typeof(Agatha.Castle.Container))
+            new ServiceLayerConfiguration(GetType().Assembly, GetType().Assembly, typeof(Agatha.Unity.Container))
                .RegisterRequestHandlerInterceptor<TestInterceptor>()
                .Initialize();
 
@@ -72,7 +72,7 @@ namespace Tests.RequestProcessorTests.Interceptors
         {
             IoC.Container = null;
             request = new InterceptedSpyRequest();
-            new ServiceLayerAndClientConfiguration(typeof(ThrowingRequestHandler).Assembly, GetType().Assembly, new Agatha.Castle.Container())
+            new ServiceLayerAndClientConfiguration(typeof(ThrowingRequestHandler).Assembly, GetType().Assembly, new Agatha.Unity.Container())
                .RegisterRequestHandlerInterceptor<InterceptingInterceptor>()
                .RegisterRequestHandlerInterceptor<SubSequentInterceptor>()
                .Initialize();
@@ -114,7 +114,7 @@ namespace Tests.RequestProcessorTests.Interceptors
         protected override void Given()
         {
             IoC.Container = null;
-            new ServiceLayerConfiguration(GetType().Assembly, GetType().Assembly, new Agatha.Castle.Container())
+            new ServiceLayerConfiguration(GetType().Assembly, GetType().Assembly, new Agatha.Unity.Container())
                .RegisterRequestHandlerInterceptor<TestInterceptor>()
                .RegisterRequestHandlerInterceptor<SubSequentInterceptor>()
                .Initialize();
@@ -158,7 +158,7 @@ namespace Tests.RequestProcessorTests.Interceptors
             subsequentRequest = new SpyRequest();
             anotherSubsequentRequest = new SpyRequest();
             subsequentRequests = new[] { subsequentRequest, anotherSubsequentRequest };
-            new ServiceLayerAndClientConfiguration(typeof(ThrowingRequestHandler).Assembly, GetType().Assembly, new Agatha.Castle.Container())
+            new ServiceLayerAndClientConfiguration(typeof(ThrowingRequestHandler).Assembly, GetType().Assembly, new Agatha.Unity.Container())
                     .RegisterRequestHandlerInterceptor<TestInterceptor>()
                     .Initialize();
         }
@@ -215,7 +215,7 @@ namespace Tests.RequestProcessorTests.Interceptors
         protected override void Given()
         {
             IoC.Container = null;
-            new ServiceLayerConfiguration(GetType().Assembly, GetType().Assembly, typeof(Agatha.Castle.Container))
+            new ServiceLayerConfiguration(GetType().Assembly, GetType().Assembly, typeof(Agatha.Unity.Container))
                .RegisterRequestHandlerInterceptor<FailingBeforeHandlingRequestInterceptor>()
                .RegisterRequestHandlerInterceptor<SubSequentInterceptor>()
                .Initialize();
@@ -268,7 +268,7 @@ namespace Tests.RequestProcessorTests.Interceptors
         protected override void Given()
         {
             IoC.Container = null;
-            new ServiceLayerConfiguration(GetType().Assembly, GetType().Assembly, typeof(Agatha.Castle.Container))
+            new ServiceLayerConfiguration(GetType().Assembly, GetType().Assembly, typeof(Agatha.Unity.Container))
                .RegisterRequestHandlerInterceptor<TestInterceptor>()
                .RegisterRequestHandlerInterceptor<FailingBeforeHandlingRequestInterceptor>()
                .Initialize();
@@ -312,7 +312,7 @@ namespace Tests.RequestProcessorTests.Interceptors
         protected override void Given()
         {
             IoC.Container = null;
-            new ServiceLayerConfiguration(GetType().Assembly, GetType().Assembly, typeof(Agatha.Castle.Container))
+            new ServiceLayerConfiguration(GetType().Assembly, GetType().Assembly, typeof(Agatha.Unity.Container))
                .RegisterRequestHandlerInterceptor<OneWaySpyRequestInterceptor>()
                .Initialize();
 

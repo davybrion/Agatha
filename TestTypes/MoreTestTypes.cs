@@ -1,4 +1,5 @@
-﻿using Agatha.Common;
+﻿using System.Threading.Tasks;
+using Agatha.Common;
 using Agatha.ServiceLayer;
 
 namespace TestTypes
@@ -15,6 +16,11 @@ namespace TestTypes
 		{
 			return CreateTypedResponse();
 		}
+
+	    public override async Task<Response> HandleAsync(RequestB request)
+	    {
+	        return await Task.FromResult(CreateTypedResponse());
+	    }
 	}
 
 	public class OneWayRequestHandlerB : OneWayRequestHandler<OneWayRequestB>

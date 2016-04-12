@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Agatha.Common.Caching;
 
 namespace Agatha.Common
@@ -182,7 +183,29 @@ namespace Agatha.Common
 			return tempResponseArray;
 		}
 
-		private void GetCachedResponsesAndRemoveThoseRequests(Request[] requestsToProcess, Response[] tempResponseArray, List<Request> requestsToSend)
+        protected virtual async Task<Response[]> GetResponsesAsync(Request[] requestsToProcess)
+        {
+            BeforeSendingRequests(requestsToProcess);
+
+            var tempResponseArray = new Response[requestsToProcess.Length];
+            var requestsToSend = new List<Request>(requestsToProcess);
+
+            GetCachedResponsesAndRemoveThoseRequests(requestsToProcess, tempResponseArray, requestsToSend);
+            var requestsToSendAsArray = requestsToSend.ToArray();
+
+            if (requestsToSend.Count > 0)
+            {
+                var receivedResponses = await requestProcessor.ProcessAsync(requestsToSendAsArray);
+                AddCacheableResponsesToCache(receivedResponses, requestsToSendAsArray);
+                PutReceivedResponsesInTempResponseArray(tempResponseArray, receivedResponses);
+            }
+
+            AfterSendingRequests(requestsToProcess);
+            BeforeReturningResponses(tempResponseArray);
+            return tempResponseArray;
+        }
+
+        private void GetCachedResponsesAndRemoveThoseRequests(Request[] requestsToProcess, Response[] tempResponseArray, List<Request> requestsToSend)
 		{
 			for (int i = 0; i < requestsToProcess.Length; i++)
 			{

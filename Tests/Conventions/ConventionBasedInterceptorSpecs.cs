@@ -1,7 +1,7 @@
-﻿using Agatha.Castle;
-using Agatha.Common;
+﻿using Agatha.Common;
 using Agatha.Common.Interceptors;
 using Agatha.Common.InversionOfControl;
+using Agatha.Unity;
 using Rhino.Mocks;
 using Tests.RequestProcessorTests;
 using Xunit;
