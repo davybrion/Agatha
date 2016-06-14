@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Common.Logging;
+using NLog;
 using QuickDotNetCheck;
 using QuickGenerate;
 using Rhino.Mocks;
@@ -12,7 +12,7 @@ namespace Tests.RequestProcessorTests.OneWay
     public class OneWayRequestExceptionHandling : Fixture
     {
         private ProcessOneWayRequestsInput input;
-        private static ILog logger;
+        private static Logger logger;
         private static List<Exception> exceptionsThrown;
 
         public const BindingFlags FlagsForGettingEverything =
@@ -67,7 +67,7 @@ namespace Tests.RequestProcessorTests.OneWay
         
         protected override void Act()
         {
-            logger = MockRepository.GenerateMock<ILog>();
+            logger = MockRepository.GenerateMock<Logger>();
             FieldInfo info = OneWayRequestSuite.requestProcessor.GetType().GetField("logger", FlagsForGettingEverything);
             info.SetValue(OneWayRequestSuite.requestProcessor, logger);
 

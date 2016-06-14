@@ -5,14 +5,14 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 using System.Text;
 using System.Xml;
-using Common.Logging;
+using NLog;
 
 namespace Agatha.ServiceLayer.WCF
 {
     public class MessageInspector : IDispatchMessageInspector
     {
-        private readonly ILog logger = LogManager.GetLogger(typeof(MessageInspector));
-        private readonly ILog messageLogger = LogManager.GetLogger("WCF.Messages");
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly Logger messageLogger = LogManager.GetLogger("WCF.Messages");
 
         public object AfterReceiveRequest(ref Message request, IClientChannel channel, InstanceContext instanceContext)
         {
@@ -51,7 +51,7 @@ namespace Agatha.ServiceLayer.WCF
                     message.WriteMessage(writer);
                     writer.Flush();
                     var size = Math.Round(memoryStream.Position/1024d, 2);
-                    logger.InfoFormat("{0} message size: ~{1} KB", messageType, size);
+                    logger.Info($"{messageType} message size: ~{size} KB");
                 }
 
                 if (messageLogger.IsDebugEnabled)

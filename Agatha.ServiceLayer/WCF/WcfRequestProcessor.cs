@@ -26,14 +26,14 @@ namespace Agatha.ServiceLayer.WCF
 
 				try
 				{
-					responses = processor.Process(requests);
+					responses = processor.ProcessAsync(requests).Result;
 				}
 				finally
 				{
 					// IRequestProcessor is a transient component so we must release it
 					IoC.Container.Release(processor);
 				}
-                
+				
 				return responses;
 			}
 		}
@@ -54,24 +54,24 @@ namespace Agatha.ServiceLayer.WCF
 			}
 		}
 
-        public async Task<Response[]> ProcessAsync(params Request[] requests)
-        {
-            using (var processor = IoC.Container.Resolve<IRequestProcessor>())
-            {
-                Response[] responses;
+		public async Task<Response[]> ProcessAsync(params Request[] requests)
+		{
+			using (var processor = IoC.Container.Resolve<IRequestProcessor>())
+			{
+				Response[] responses;
 
-                try
-                {
-                    responses = await processor.ProcessAsync(requests);
-                }
-                finally
-                {
-                    // IRequestProcessor is a transient component so we must release it
-                    IoC.Container.Release(processor);
-                }
+				try
+				{
+					responses = await processor.ProcessAsync(requests);
+				}
+				finally
+				{
+					// IRequestProcessor is a transient component so we must release it
+					IoC.Container.Release(processor);
+				}
 
-                return responses;
-            }
-        }
-    }
+				return responses;
+			}
+		}
+	}
 }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Agatha.Common;
-using Common.Logging;
+using NLog;
 
 namespace Agatha.ServiceLayer
 {
@@ -10,7 +10,7 @@ namespace Agatha.ServiceLayer
 	{
 		public PerformanceLoggingRequestProcessor(ServiceLayerConfiguration serviceLayerConfiguration, IRequestProcessingErrorHandler errorHandler) : base(serviceLayerConfiguration, errorHandler) {}
 
-		private readonly ILog performanceLogger = LogManager.GetLogger("AgathaPerformance");
+		private readonly Logger performanceLogger = LogManager.GetLogger("AgathaPerformance");
 
 		private Stopwatch requestStopwatch;
 		private Stopwatch batchStopwatch;

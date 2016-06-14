@@ -173,7 +173,7 @@ namespace Agatha.Common
 
 			if (requestsToSend.Count > 0)
 			{
-				var receivedResponses = requestProcessor.Process(requestsToSendAsArray);
+				var receivedResponses = requestProcessor.ProcessAsync(requestsToSendAsArray).Result;
 				AddCacheableResponsesToCache(receivedResponses, requestsToSendAsArray);
 				PutReceivedResponsesInTempResponseArray(tempResponseArray, receivedResponses);
 			}

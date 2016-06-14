@@ -4,14 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Agatha.Common;
 using Agatha.Common.InversionOfControl;
-using Common.Logging;
+using NLog;
 
 namespace Agatha.ServiceLayer
 {
     public class RequestProcessor : Disposable, IRequestProcessor
     {
         private readonly ServiceLayerConfiguration serviceLayerConfiguration;
-        private readonly ILog logger = LogManager.GetLogger(typeof(RequestProcessor));
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly IRequestProcessingErrorHandler errorHandler;
 
         protected override void DisposeManagedResources()

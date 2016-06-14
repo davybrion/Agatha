@@ -4,13 +4,13 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
-using Common.Logging;
+using NLog;
 
 namespace Agatha.ServiceLayer.WCF
 {
 	public class AddErrorLoggingBehaviorAttribute : Attribute, IServiceBehavior, IErrorHandler
 	{
-		private readonly ILog logger = LogManager.GetLogger(typeof(AddErrorLoggingBehaviorAttribute));
+		private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
 		public void Validate(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase) { }
 
